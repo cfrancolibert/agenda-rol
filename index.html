@@ -77,25 +77,11 @@
     inset: 0;
     pointer-events: none;
     background-image:
-      repeating-linear-gradient(
-        98deg,
-        rgba(138,107,58,0.04) 0px,
-        rgba(138,107,58,0.04) 1px,
-        transparent 1px,
-        transparent 3px
-      ),
-      repeating-linear-gradient(
-        3deg,
-        rgba(138,107,58,0.03) 0px,
-        rgba(138,107,58,0.03) 1px,
-        transparent 1px,
-        transparent 5px
-      );
+      repeating-linear-gradient(98deg, rgba(138,107,58,0.04) 0px, rgba(138,107,58,0.04) 1px, transparent 1px, transparent 3px),
+      repeating-linear-gradient(3deg, rgba(138,107,58,0.03) 0px, rgba(138,107,58,0.03) 1px, transparent 1px, transparent 5px);
   }
 
-  .torn {
-    filter: url(#rough);
-  }
+  .torn { filter: url(#rough); }
 
   /* ========== HEADER ========== */
   .app-header {
@@ -110,9 +96,7 @@
     font-weight: 900;
     font-size: 36px;
     letter-spacing: 0.14em;
-    text-shadow:
-      0 2px 0 rgba(0,0,0,0.6),
-      0 0 20px rgba(227,192,102,0.35);
+    text-shadow: 0 2px 0 rgba(0,0,0,0.6), 0 0 20px rgba(227,192,102,0.35);
   }
   .app-header .subtitle {
     margin-top: 6px;
@@ -137,6 +121,119 @@
     background: linear-gradient(90deg, transparent, var(--gold) 50%, transparent);
   }
   .ornament svg { width: 28px; height: 28px; }
+
+  /* ========== SYNC STATUS BAR ========== */
+  .sync-bar {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-family: "Cinzel", serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .sync-bar.synced { background: rgba(35,68,33,0.92); border-color: var(--forest-deep); color: #a8d8a0; }
+  .sync-bar.syncing { background: rgba(42,27,12,0.92); border-color: var(--gold-deep); color: var(--gold-bright); }
+  .sync-bar.error { background: rgba(90,26,24,0.92); border-color: var(--garnet-deep); color: #ffb8b0; }
+  .sync-bar.notoken { background: rgba(42,27,12,0.92); border-color: var(--parchment-edge); color: var(--parchment-1); }
+  .sync-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+  }
+  .sync-bar.synced .sync-dot { background: #6aa85e; }
+  .sync-bar.syncing .sync-dot { background: var(--gold-bright); animation: pulse 0.8s infinite; }
+  .sync-bar.error .sync-dot { background: #c8564d; }
+  .sync-bar.notoken .sync-dot { background: var(--parchment-3); }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  /* ========== SETUP OVERLAY ========== */
+  .setup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 150;
+    background: rgba(10,6,2,0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+    animation: fadeIn 0.3s ease;
+  }
+  .setup-card {
+    width: min(520px, 92vw);
+    padding: 44px 42px 38px;
+    border-radius: 6px;
+  }
+  .setup-card h2 {
+    font-family: "Cinzel Decorative", serif;
+    font-weight: 900;
+    text-align: center;
+    margin: 0 0 6px;
+    font-size: 24px;
+    color: var(--ink);
+    letter-spacing: 0.08em;
+  }
+  .setup-card .setup-sub {
+    text-align: center;
+    font-style: italic;
+    color: var(--ink-faded);
+    margin-bottom: 28px;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .setup-steps {
+    font-family: "EB Garamond", serif;
+    font-size: 15px;
+    color: var(--ink-soft);
+    margin: 0 0 20px;
+    padding-left: 20px;
+    line-height: 1.9;
+  }
+  .setup-steps a {
+    color: var(--gold-deep);
+    text-decoration: underline;
+  }
+  .setup-card input[type="text"], .setup-card input[type="password"] {
+    width: 100%;
+    padding: 12px 14px;
+    font-family: "EB Garamond", serif;
+    font-size: 16px;
+    color: var(--ink);
+    background: rgba(255,245,220,0.6);
+    border: 1px solid var(--parchment-edge);
+    border-radius: 3px;
+    outline: none;
+    letter-spacing: 0.03em;
+    margin-bottom: 10px;
+  }
+  .setup-card input:focus {
+    border-color: var(--gold-deep);
+    box-shadow: 0 0 0 2px rgba(184,137,59,0.3);
+  }
+  .setup-card .setup-hint {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-faded);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .setup-card .modal-actions { display: flex; gap: 12px; justify-content: center; margin-top: 6px; }
+  .setup-error {
+    color: var(--garnet);
+    font-size: 13px;
+    text-align: center;
+    margin-top: 8px;
+    font-style: italic;
+  }
 
   /* ========== USER SELECTION SCREEN ========== */
   .user-screen {
@@ -167,33 +264,25 @@
     transition: transform 0.25s ease, box-shadow 0.25s ease;
     user-select: none;
   }
-  .user-card:hover {
-    transform: translateY(-6px) rotate(-0.5deg);
-  }
+  .user-card:hover { transform: translateY(-6px) rotate(-0.5deg); }
   .user-card:hover .card-actions { opacity: 1; }
   .card-actions {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    display: flex;
-    gap: 6px;
+    top: 10px; right: 10px;
+    display: flex; gap: 6px;
     opacity: 0;
     transition: opacity 0.2s ease;
     z-index: 3;
   }
   .card-action-btn {
-    width: 30px;
-    height: 30px;
+    width: 30px; height: 30px;
     border-radius: 50%;
     border: 1px solid var(--gold-deep);
     background: rgba(244,232,207,0.92);
     color: var(--ink);
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    padding: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; padding: 0;
     box-shadow: 0 2px 6px rgba(0,0,0,0.35);
     transition: background 0.15s ease, transform 0.15s ease;
   }
@@ -202,23 +291,16 @@
 
   /* ============ SEAL / PACT OVERLAY ============ */
   .pact-overlay {
-    position: fixed;
-    inset: 0;
-    z-index: 200;
+    position: fixed; inset: 0; z-index: 200;
     background: radial-gradient(ellipse at center, #1a0e06 0%, #000 80%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
     animation: pactFadeIn 0.6s ease;
     overflow: hidden;
   }
   @keyframes pactFadeIn { from { opacity: 0; } to { opacity: 1; } }
-
   .pact-overlay::before {
     content: "";
-    position: absolute;
-    inset: -20%;
+    position: absolute; inset: -20%;
     background:
       radial-gradient(circle at 20% 30%, rgba(138,47,42,0.25) 0%, transparent 40%),
       radial-gradient(circle at 80% 70%, rgba(184,137,59,0.12) 0%, transparent 50%);
@@ -226,8 +308,7 @@
   }
   .pact-overlay::after {
     content: "";
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background-image:
       radial-gradient(circle at 10% 20%, rgba(255,220,150,0.04) 0%, transparent 2%),
       radial-gradient(circle at 70% 30%, rgba(255,220,150,0.03) 0%, transparent 1.5%),
@@ -236,28 +317,16 @@
     pointer-events: none;
     animation: emberFlicker 3s infinite alternate;
   }
-  @keyframes emberFlicker {
-    from { opacity: 0.6; }
-    to { opacity: 1; }
-  }
-
+  @keyframes emberFlicker { from { opacity: 0.6; } to { opacity: 1; } }
   .pact-title {
     font-family: "Cinzel Decorative", "Cinzel", serif;
     font-weight: 900;
     font-size: clamp(32px, 6vw, 76px);
-    letter-spacing: 0.14em;
-    color: #e3c066;
-    text-align: center;
-    padding: 0 24px;
-    max-width: 1200px;
-    line-height: 1.15;
-    text-shadow:
-      0 0 20px rgba(227,192,102,0.6),
-      0 0 60px rgba(184,137,59,0.45),
-      0 4px 0 rgba(0,0,0,0.6);
+    letter-spacing: 0.14em; color: #e3c066;
+    text-align: center; padding: 0 24px; max-width: 1200px; line-height: 1.15;
+    text-shadow: 0 0 20px rgba(227,192,102,0.6), 0 0 60px rgba(184,137,59,0.45), 0 4px 0 rgba(0,0,0,0.6);
     animation: titleGlow 2.6s ease-in-out infinite alternate, titleRise 1s ease-out;
-    position: relative;
-    z-index: 3;
+    position: relative; z-index: 3;
   }
   @keyframes titleGlow {
     from { text-shadow: 0 0 20px rgba(227,192,102,0.4), 0 0 40px rgba(184,137,59,0.3), 0 4px 0 rgba(0,0,0,0.6); }
@@ -267,28 +336,15 @@
     from { opacity: 0; transform: translateY(30px) scale(0.95); letter-spacing: 0.3em; }
     to   { opacity: 1; transform: translateY(0) scale(1); letter-spacing: 0.14em; }
   }
-
   .pact-ornament {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    color: #8a6218;
-    margin-top: 24px;
-    margin-bottom: 30px;
-    animation: fadeInSlow 1.6s ease 0.4s both;
-    z-index: 3;
+    display: flex; align-items: center; gap: 18px; color: #8a6218;
+    margin-top: 24px; margin-bottom: 30px;
+    animation: fadeInSlow 1.6s ease 0.4s both; z-index: 3;
   }
-  .pact-ornament .line {
-    width: 160px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #b8893b 50%, transparent);
-  }
+  .pact-ornament .line { width: 160px; height: 1px; background: linear-gradient(90deg, transparent, #b8893b 50%, transparent); }
   .pact-ornament .star { font-size: 22px; color: #b8893b; text-shadow: 0 0 12px #8a6218; }
-
   .pact-contract {
-    position: relative;
-    width: min(520px, 80vw);
-    max-height: 52vh;
+    position: relative; width: min(520px, 80vw); max-height: 52vh;
     animation: contractDrop 1.2s cubic-bezier(0.2, 0.8, 0.3, 1) 0.6s both;
     z-index: 3;
     filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8)) drop-shadow(0 0 30px rgba(184,137,59,0.3));
@@ -297,40 +353,21 @@
     from { opacity: 0; transform: translateY(-40px) rotate(-2deg); }
     to   { opacity: 1; transform: translateY(0) rotate(-1deg); }
   }
-  @keyframes fadeInSlow {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-
+  @keyframes fadeInSlow { from { opacity: 0; } to { opacity: 1; } }
   .pact-sub {
-    font-family: "IM Fell English", serif;
-    font-style: italic;
-    color: #c49a55;
-    font-size: 18px;
-    margin-top: 18px;
-    letter-spacing: 0.08em;
-    animation: fadeInSlow 2s ease 1.4s both;
-    text-align: center;
-    z-index: 3;
+    font-family: "IM Fell English", serif; font-style: italic;
+    color: #c49a55; font-size: 18px; margin-top: 18px; letter-spacing: 0.08em;
+    animation: fadeInSlow 2s ease 1.4s both; text-align: center; z-index: 3;
   }
 
   /* SEAL BUTTON */
   .seal-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    font-family: "Cinzel", serif;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    font-size: 14px;
-    padding: 14px 28px 14px 20px;
-    border-radius: 3px;
-    cursor: pointer;
-    border: 1px solid var(--wax);
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: "Cinzel", serif; font-weight: 700; letter-spacing: 0.14em;
+    text-transform: uppercase; font-size: 14px; padding: 14px 28px 14px 20px;
+    border-radius: 3px; cursor: pointer; border: 1px solid var(--wax);
     background: linear-gradient(180deg, #a83832 0%, #6f1f1a 100%);
-    color: #fff6dc;
-    text-shadow: 0 1px 0 rgba(0,0,0,0.4);
+    color: #fff6dc; text-shadow: 0 1px 0 rgba(0,0,0,0.4);
     box-shadow: 0 4px 12px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
     transition: all 0.15s ease;
   }
@@ -340,549 +377,167 @@
     box-shadow: 0 6px 16px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.2);
   }
   .seal-btn .wax-dot {
-    width: 22px;
-    height: 22px;
-    border-radius: 50%;
+    width: 22px; height: 22px; border-radius: 50%;
     background: radial-gradient(circle at 35% 30%, #e3c066 0%, #8a6218 70%);
     box-shadow: inset -1px -2px 4px rgba(0,0,0,0.35);
   }
+
+  /* PORTRAIT */
   .user-card:hover .portrait-frame {
     box-shadow:
-      inset 0 0 0 3px var(--gold-deep),
-      inset 0 0 0 5px var(--parchment-2),
-      inset 0 0 0 7px var(--gold),
-      0 0 30px rgba(227,192,102,0.4),
-      0 10px 20px rgba(0,0,0,0.3);
+      inset 0 0 0 3px var(--gold-deep), inset 0 0 0 5px var(--parchment-2),
+      inset 0 0 0 7px var(--gold), 0 0 30px rgba(227,192,102,0.4), 0 10px 20px rgba(0,0,0,0.3);
   }
   .portrait-frame {
-    position: relative;
-    width: 170px;
-    height: 170px;
-    margin: 0 auto 18px;
-    border-radius: 50%;
-    overflow: hidden;
+    position: relative; width: 170px; height: 170px;
+    margin: 0 auto 18px; border-radius: 50%; overflow: hidden;
     background: var(--parchment-3);
     box-shadow:
-      inset 0 0 0 3px var(--gold-deep),
-      inset 0 0 0 5px var(--parchment-1),
-      inset 0 0 0 7px var(--gold),
-      0 6px 14px rgba(0,0,0,0.25);
-    transition: box-shadow 0.3s ease;
-    cursor: pointer;
+      inset 0 0 0 3px var(--gold-deep), inset 0 0 0 5px var(--parchment-1),
+      inset 0 0 0 7px var(--gold), 0 6px 14px rgba(0,0,0,0.25);
+    transition: box-shadow 0.3s ease; cursor: pointer;
   }
-  .portrait-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
+  .portrait-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .portrait-placeholder {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Cinzel Decorative", serif;
-    font-weight: 900;
-    font-size: 64px;
-    color: var(--ink);
-    text-shadow: 0 1px 0 rgba(255,240,200,0.5);
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+    font-family: "Cinzel Decorative", serif; font-weight: 900; font-size: 64px;
+    color: var(--ink); text-shadow: 0 1px 0 rgba(255,240,200,0.5);
     background: radial-gradient(circle at 35% 30%, var(--parchment-1) 0%, var(--parchment-3) 100%);
   }
   .portrait-upload-hint {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(42,27,12,0.75);
-    color: var(--gold-bright);
-    font-family: "Cinzel", serif;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    opacity: 0;
-    transition: opacity 0.2s ease;
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: rgba(42,27,12,0.75); color: var(--gold-bright);
+    font-family: "Cinzel", serif; font-size: 12px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    opacity: 0; transition: opacity 0.2s ease;
   }
   .portrait-frame:hover .portrait-upload-hint { opacity: 1; }
-  .user-name {
-    text-align: center;
-    font-family: "Cinzel", serif;
-    font-weight: 700;
-    font-size: 22px;
-    color: var(--ink);
-    letter-spacing: 0.08em;
-    margin: 0;
-  }
-  .user-title {
-    text-align: center;
-    font-family: "IM Fell English", serif;
-    font-style: italic;
-    font-size: 14px;
-    color: var(--ink-faded);
-    margin-top: 2px;
-  }
-
+  .user-name { text-align: center; font-family: "Cinzel", serif; font-weight: 700; font-size: 22px; color: var(--ink); letter-spacing: 0.08em; margin: 0; }
+  .user-title { text-align: center; font-family: "IM Fell English", serif; font-style: italic; font-size: 14px; color: var(--ink-faded); margin-top: 2px; }
   .new-user-card .portrait-frame {
-    background: repeating-linear-gradient(
-      45deg,
-      var(--parchment-2) 0 10px,
-      var(--parchment-1) 10px 20px
-    );
+    background: repeating-linear-gradient(45deg, var(--parchment-2) 0 10px, var(--parchment-1) 10px 20px);
   }
-  .new-user-plus {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Cinzel", serif;
-    font-weight: 800;
-    font-size: 72px;
-    color: var(--gold-deep);
-    line-height: 1;
-  }
+  .new-user-plus { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: "Cinzel", serif; font-weight: 800; font-size: 72px; color: var(--gold-deep); line-height: 1; }
 
   /* Modal */
   .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(10,6,2,0.75);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
-    backdrop-filter: blur(2px);
+    position: fixed; inset: 0; background: rgba(10,6,2,0.75);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 50; backdrop-filter: blur(2px);
   }
-  .modal {
-    width: min(440px, 92vw);
-    padding: 40px 38px 34px;
-    border-radius: 6px;
-    position: relative;
-  }
-  .modal h2 {
-    font-family: "Cinzel Decorative", serif;
-    font-weight: 900;
-    text-align: center;
-    margin: 0 0 4px;
-    font-size: 26px;
-    color: var(--ink);
-    letter-spacing: 0.08em;
-  }
-  .modal .modal-sub {
-    text-align: center;
-    font-style: italic;
-    color: var(--ink-faded);
-    margin-bottom: 24px;
-    font-size: 15px;
-  }
-  .modal-portrait {
-    width: 130px;
-    height: 130px;
-    margin: 0 auto 18px;
-  }
+  .modal { width: min(440px, 92vw); padding: 40px 38px 34px; border-radius: 6px; position: relative; }
+  .modal h2 { font-family: "Cinzel Decorative", serif; font-weight: 900; text-align: center; margin: 0 0 4px; font-size: 26px; color: var(--ink); letter-spacing: 0.08em; }
+  .modal .modal-sub { text-align: center; font-style: italic; color: var(--ink-faded); margin-bottom: 24px; font-size: 15px; }
+  .modal-portrait { width: 130px; height: 130px; margin: 0 auto 18px; }
   .modal input[type="text"] {
-    width: 100%;
-    padding: 12px 14px;
-    font-family: "EB Garamond", serif;
-    font-size: 18px;
-    color: var(--ink);
-    background: rgba(255,245,220,0.6);
-    border: 1px solid var(--parchment-edge);
-    border-radius: 3px;
-    outline: none;
-    text-align: center;
-    letter-spacing: 0.05em;
+    width: 100%; padding: 12px 14px; font-family: "EB Garamond", serif; font-size: 18px;
+    color: var(--ink); background: rgba(255,245,220,0.6); border: 1px solid var(--parchment-edge);
+    border-radius: 3px; outline: none; text-align: center; letter-spacing: 0.05em;
   }
-  .modal input[type="text"]:focus {
-    border-color: var(--gold-deep);
-    box-shadow: 0 0 0 2px rgba(184,137,59,0.3);
-  }
-  .modal-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 22px;
-    justify-content: center;
-  }
+  .modal input[type="text"]:focus { border-color: var(--gold-deep); box-shadow: 0 0 0 2px rgba(184,137,59,0.3); }
+  .modal-actions { display: flex; gap: 12px; margin-top: 22px; justify-content: center; }
 
   .btn {
-    font-family: "Cinzel", serif;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-size: 13px;
-    padding: 10px 22px;
-    border-radius: 3px;
-    cursor: pointer;
-    border: 1px solid var(--gold-deep);
+    font-family: "Cinzel", serif; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; font-size: 13px; padding: 10px 22px; border-radius: 3px;
+    cursor: pointer; border: 1px solid var(--gold-deep);
     background: linear-gradient(180deg, var(--parchment-0) 0%, var(--parchment-2) 100%);
-    color: var(--ink);
-    transition: all 0.15s ease;
+    color: var(--ink); transition: all 0.15s ease;
   }
-  .btn:hover {
-    background: linear-gradient(180deg, var(--parchment-1) 0%, var(--parchment-3) 100%);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-  }
-  .btn.primary {
-    background: linear-gradient(180deg, #b8893b 0%, #8a6218 100%);
-    color: #fff6dc;
-    border-color: var(--gold-deep);
-    text-shadow: 0 1px 0 rgba(0,0,0,0.3);
-  }
-  .btn.primary:hover {
-    background: linear-gradient(180deg, #c89a4d 0%, #9a7220 100%);
-  }
+  .btn:hover { background: linear-gradient(180deg, var(--parchment-1) 0%, var(--parchment-3) 100%); box-shadow: 0 2px 6px rgba(0,0,0,0.25); }
+  .btn.primary { background: linear-gradient(180deg, #b8893b 0%, #8a6218 100%); color: #fff6dc; border-color: var(--gold-deep); text-shadow: 0 1px 0 rgba(0,0,0,0.3); }
+  .btn.primary:hover { background: linear-gradient(180deg, #c89a4d 0%, #9a7220 100%); }
   .btn.ghost { background: transparent; border-color: var(--ink-faded); }
   .btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
   /* ========== CALENDAR SCREEN ========== */
-  .cal-screen {
-    max-width: 1480px;
-    margin: 0 auto;
-    padding: 24px 40px 60px;
-  }
+  .cal-screen { max-width: 1480px; margin: 0 auto; padding: 24px 40px 60px; }
   .cal-topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 14px 22px;
-    border-radius: 4px;
-    margin-bottom: 20px;
-    background:
-      linear-gradient(180deg, rgba(244,232,207,0.95) 0%, rgba(220,195,148,0.9) 100%);
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: 14px 22px; border-radius: 4px; margin-bottom: 20px;
+    background: linear-gradient(180deg, rgba(244,232,207,0.95) 0%, rgba(220,195,148,0.9) 100%);
     border: 1px solid var(--parchment-edge);
     box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(227,192,102,0.3);
   }
-  .current-user {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
+  .current-user { display: flex; align-items: center; gap: 14px; }
   .current-user .mini-portrait {
-    width: 54px;
-    height: 54px;
-    border-radius: 50%;
-    overflow: hidden;
+    width: 54px; height: 54px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
     box-shadow: inset 0 0 0 2px var(--gold-deep), inset 0 0 0 3px var(--parchment-1), inset 0 0 0 4px var(--gold);
-    flex-shrink: 0;
   }
   .current-user .mini-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .current-user .mini-portrait .portrait-placeholder { font-size: 22px; }
   .current-user .who { display: flex; flex-direction: column; line-height: 1.15; }
-  .current-user .who .label {
-    font-family: "IM Fell English", serif;
-    font-style: italic;
-    color: var(--ink-faded);
-    font-size: 13px;
-  }
-  .current-user .who .name {
-    font-family: "Cinzel", serif;
-    font-weight: 700;
-    font-size: 20px;
-    letter-spacing: 0.08em;
-    color: var(--ink);
-  }
-
+  .current-user .who .label { font-family: "IM Fell English", serif; font-style: italic; color: var(--ink-faded); font-size: 13px; }
+  .current-user .who .name { font-family: "Cinzel", serif; font-weight: 700; font-size: 20px; letter-spacing: 0.08em; color: var(--ink); }
   .view-tabs {
-    display: inline-flex;
-    background: rgba(42,27,12,0.12);
-    border: 1px solid var(--parchment-edge);
-    border-radius: 3px;
-    padding: 3px;
+    display: inline-flex; background: rgba(42,27,12,0.12);
+    border: 1px solid var(--parchment-edge); border-radius: 3px; padding: 3px;
   }
   .view-tabs button {
-    font-family: "Cinzel", serif;
-    font-weight: 600;
-    font-size: 12px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 8px 18px;
-    border: none;
-    background: transparent;
-    color: var(--ink-soft);
-    cursor: pointer;
-    border-radius: 2px;
+    font-family: "Cinzel", serif; font-weight: 600; font-size: 12px; letter-spacing: 0.12em;
+    text-transform: uppercase; padding: 8px 18px; border: none; background: transparent;
+    color: var(--ink-soft); cursor: pointer; border-radius: 2px;
   }
   .view-tabs button.active {
-    background: linear-gradient(180deg, #b8893b, #8a6218);
-    color: #fff6dc;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.4);
-    text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+    background: linear-gradient(180deg, #b8893b, #8a6218); color: #fff6dc;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.4); text-shadow: 0 1px 0 rgba(0,0,0,0.3);
   }
-
-  .topbar-actions {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-  }
-
+  .topbar-actions { display: flex; gap: 10px; align-items: center; }
   .legend {
-    display: flex;
-    gap: 18px;
-    align-items: center;
-    padding: 10px 18px;
-    margin-bottom: 14px;
-    background: rgba(244,232,207,0.88);
-    border: 1px solid var(--parchment-edge);
-    border-radius: 3px;
-    font-family: "EB Garamond", serif;
-    font-size: 15px;
-    color: var(--ink);
-    flex-wrap: wrap;
+    display: flex; gap: 18px; align-items: center; padding: 10px 18px; margin-bottom: 14px;
+    background: rgba(244,232,207,0.88); border: 1px solid var(--parchment-edge); border-radius: 3px;
+    font-family: "EB Garamond", serif; font-size: 15px; color: var(--ink); flex-wrap: wrap;
   }
-  .legend .title {
-    font-family: "Cinzel", serif;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-size: 12px;
-    color: var(--ink-soft);
-    margin-right: 6px;
-  }
+  .legend .title { font-family: "Cinzel", serif; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-size: 12px; color: var(--ink-soft); margin-right: 6px; }
   .legend-item { display: flex; align-items: center; gap: 8px; }
-  .legend-swatch {
-    width: 20px;
-    height: 20px;
-    border-radius: 3px;
-    border: 1px solid var(--ink-faded);
-  }
+  .legend-swatch { width: 20px; height: 20px; border-radius: 3px; border: 1px solid var(--ink-faded); }
   .sw-empty { background: rgba(244,232,207,0.3); border-style: dashed; }
   .sw-yes { background: linear-gradient(180deg, #4e8745 0%, #2d5f2a 100%); border-color: var(--forest-deep); }
   .sw-maybe { background: linear-gradient(180deg, #e3a53a 0%, #a3741a 100%); border-color: var(--amber-deep); }
   .sw-no { background: linear-gradient(180deg, #a93d36 0%, #6a1e1a 100%); border-color: var(--garnet-deep); }
-  .legend .hint {
-    margin-left: auto;
-    font-style: italic;
-    color: var(--ink-faded);
-    font-size: 14px;
-  }
+  .legend .hint { margin-left: auto; font-style: italic; color: var(--ink-faded); font-size: 14px; }
 
   /* ========== GRID ========== */
-  .cal-wrap {
-    padding: 28px 24px;
-    border-radius: 4px;
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: 90px repeat(7, 1fr);
-    gap: 3px;
-  }
+  .cal-wrap { padding: 28px 24px; border-radius: 4px; }
+  .grid { display: grid; grid-template-columns: 90px repeat(7, 1fr); gap: 3px; }
   .corner { background: transparent; }
   .day-head {
-    font-family: "Cinzel", serif;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    font-size: 14px;
-    text-align: center;
-    padding: 10px 4px 12px;
-    color: var(--ink);
-    border-bottom: 2px solid var(--gold-deep);
-    position: relative;
+    font-family: "Cinzel", serif; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; font-size: 14px; text-align: center; padding: 10px 4px 12px;
+    color: var(--ink); border-bottom: 2px solid var(--gold-deep);
   }
-  .day-head .runic {
-    display: block;
-    font-family: "IM Fell English", serif;
-    font-style: italic;
-    font-size: 11px;
-    color: var(--ink-faded);
-    letter-spacing: 0.05em;
-    margin-top: 1px;
-    text-transform: none;
-    font-weight: 400;
-  }
-
-  .hour-label {
-    font-family: "Cinzel", serif;
-    font-weight: 600;
-    font-size: 13px;
-    color: var(--ink-soft);
-    padding: 10px 8px 0 0;
-    text-align: right;
-    line-height: 1;
-    letter-spacing: 0.04em;
-    position: relative;
-    top: -6px;
-  }
-
+  .day-head .runic { display: block; font-family: "IM Fell English", serif; font-style: italic; font-size: 11px; color: var(--ink-faded); letter-spacing: 0.05em; margin-top: 1px; text-transform: none; font-weight: 400; }
+  .hour-label { font-family: "Cinzel", serif; font-weight: 600; font-size: 13px; color: var(--ink-soft); padding: 10px 8px 0 0; text-align: right; line-height: 1; letter-spacing: 0.04em; position: relative; top: -6px; }
   .cell {
-    height: 42px;
-    background: rgba(244,232,207,0.35);
-    border: 1px solid rgba(138,107,58,0.4);
-    border-radius: 2px;
-    cursor: pointer;
-    position: relative;
-    transition: background 0.1s ease, transform 0.08s ease;
-    user-select: none;
-    overflow: hidden;
+    height: 42px; background: rgba(244,232,207,0.35); border: 1px solid rgba(138,107,58,0.4);
+    border-radius: 2px; cursor: pointer; position: relative;
+    transition: background 0.1s ease, transform 0.08s ease; user-select: none; overflow: hidden;
   }
-  .cell::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image:
-      repeating-linear-gradient(45deg, rgba(138,107,58,0.06) 0 1px, transparent 1px 6px);
-    pointer-events: none;
-  }
-  .cell:hover {
-    background: rgba(244,232,207,0.65);
-    border-color: var(--gold-deep);
-  }
-  .cell.yes {
-    background: linear-gradient(180deg, #6aa85e 0%, #3a6f34 100%);
-    border-color: var(--forest-deep);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0,0,0,0.2);
-  }
-  .cell.maybe {
-    background: linear-gradient(180deg, #e8b14b 0%, #b07c1c 100%);
-    border-color: var(--amber-deep);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), inset 0 -2px 0 rgba(0,0,0,0.2);
-  }
-  .cell.no {
-    background: linear-gradient(180deg, #b84b43 0%, #72221d 100%);
-    border-color: var(--garnet-deep);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -2px 0 rgba(0,0,0,0.25);
-  }
+  .cell::before { content: ""; position: absolute; inset: 0; background-image: repeating-linear-gradient(45deg, rgba(138,107,58,0.06) 0 1px, transparent 1px 6px); pointer-events: none; }
+  .cell:hover { background: rgba(244,232,207,0.65); border-color: var(--gold-deep); }
+  .cell.yes { background: linear-gradient(180deg, #6aa85e 0%, #3a6f34 100%); border-color: var(--forest-deep); box-shadow: inset 0 1px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0,0,0,0.2); }
+  .cell.maybe { background: linear-gradient(180deg, #e8b14b 0%, #b07c1c 100%); border-color: var(--amber-deep); box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), inset 0 -2px 0 rgba(0,0,0,0.2); }
+  .cell.no { background: linear-gradient(180deg, #b84b43 0%, #72221d 100%); border-color: var(--garnet-deep); box-shadow: inset 0 1px 0 rgba(255,255,255,0.15), inset 0 -2px 0 rgba(0,0,0,0.25); }
   .cell.yes::before, .cell.maybe::before, .cell.no::before { opacity: 0; }
-
-  .cell .state-icon {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgba(255,245,220,0.85);
-    font-family: "Cinzel Decorative", serif;
-    font-weight: 900;
-    font-size: 18px;
-    text-shadow: 0 1px 0 rgba(0,0,0,0.35);
-    pointer-events: none;
-  }
-
-  .cell.combined {
-    background: rgba(244,232,207,0.35);
-    cursor: default;
-  }
+  .cell .state-icon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: rgba(255,245,220,0.85); font-family: "Cinzel Decorative", serif; font-weight: 900; font-size: 18px; text-shadow: 0 1px 0 rgba(0,0,0,0.35); pointer-events: none; }
+  .cell.combined { background: rgba(244,232,207,0.35); cursor: default; }
   .cell.combined:hover { transform: none; }
-  .cell .stack {
-    position: absolute;
-    inset: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 3px;
-    flex-wrap: wrap;
-  }
-  .cell .avatar-dot {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    overflow: hidden;
-    box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px var(--ink-soft);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: "Cinzel", serif;
-    font-weight: 800;
-    font-size: 10px;
-    color: var(--ink);
-    background: var(--parchment-2);
-    flex-shrink: 0;
-  }
+  .cell .stack { position: absolute; inset: 3px; display: flex; align-items: center; justify-content: center; gap: 3px; flex-wrap: wrap; }
+  .cell .avatar-dot { width: 18px; height: 18px; border-radius: 50%; overflow: hidden; box-shadow: 0 0 0 1.5px #fff, 0 0 0 2.5px var(--ink-soft); display: flex; align-items: center; justify-content: center; font-family: "Cinzel", serif; font-weight: 800; font-size: 10px; color: var(--ink); background: var(--parchment-2); flex-shrink: 0; }
   .cell .avatar-dot img { width: 100%; height: 100%; object-fit: cover; }
   .cell .avatar-dot.maybe { box-shadow: 0 0 0 1.5px #e8b14b, 0 0 0 2.5px var(--amber-deep); }
   .cell .avatar-dot.yes { box-shadow: 0 0 0 1.5px #6aa85e, 0 0 0 2.5px var(--forest-deep); }
-
-  .cell.all-available {
-    background: linear-gradient(180deg, rgba(106,168,94,0.9) 0%, rgba(58,111,52,0.85) 100%);
-    border-color: var(--forest-deep);
-    box-shadow:
-      inset 0 0 0 1px rgba(227,192,102,0.7),
-      inset 0 0 18px rgba(227,192,102,0.4),
-      0 0 14px rgba(227,192,102,0.35);
-  }
-  .cell.all-available::after {
-    content: "★";
-    position: absolute;
-    top: 2px;
-    right: 3px;
-    font-size: 11px;
-    color: var(--gold-bright);
-    text-shadow: 0 1px 0 rgba(0,0,0,0.4);
-  }
-
-  .tooltip {
-    position: fixed;
-    pointer-events: none;
-    z-index: 80;
-    background: #f4e8cf;
-    border: 1px solid var(--gold-deep);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.5);
-    padding: 8px 12px;
-    border-radius: 3px;
-    font-family: "EB Garamond", serif;
-    font-size: 13px;
-    color: var(--ink);
-    min-width: 160px;
-  }
-  .tooltip .tt-title {
-    font-family: "Cinzel", serif;
-    font-weight: 700;
-    font-size: 12px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    border-bottom: 1px solid rgba(138,107,58,0.5);
-    padding-bottom: 4px;
-    margin-bottom: 6px;
-  }
+  .cell.all-available { background: linear-gradient(180deg, rgba(106,168,94,0.9) 0%, rgba(58,111,52,0.85) 100%); border-color: var(--forest-deep); box-shadow: inset 0 0 0 1px rgba(227,192,102,0.7), inset 0 0 18px rgba(227,192,102,0.4), 0 0 14px rgba(227,192,102,0.35); }
+  .cell.all-available::after { content: "★"; position: absolute; top: 2px; right: 3px; font-size: 11px; color: var(--gold-bright); text-shadow: 0 1px 0 rgba(0,0,0,0.4); }
+  .tooltip { position: fixed; pointer-events: none; z-index: 80; background: #f4e8cf; border: 1px solid var(--gold-deep); box-shadow: 0 6px 20px rgba(0,0,0,0.5); padding: 8px 12px; border-radius: 3px; font-family: "EB Garamond", serif; font-size: 13px; color: var(--ink); min-width: 160px; }
+  .tooltip .tt-title { font-family: "Cinzel", serif; font-weight: 700; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-soft); border-bottom: 1px solid rgba(138,107,58,0.5); padding-bottom: 4px; margin-bottom: 6px; }
   .tooltip .tt-row { display: flex; align-items: center; gap: 8px; padding: 2px 0; }
-  .tooltip .tt-dot {
-    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
-  }
-
-  .screen {
-    animation: fadeIn 0.35s ease;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .seal {
-    display: inline-block;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #a83832 0%, #6f1f1a 60%, #3d0f0c 100%);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset -2px -3px 8px rgba(0,0,0,0.4);
-    position: relative;
-    vertical-align: middle;
-  }
-  .seal::after {
-    content: "✦";
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #f4c05a;
-    font-size: 18px;
-    text-shadow: 0 1px 0 rgba(0,0,0,0.4);
-  }
-
+  .tooltip .tt-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .screen { animation: fadeIn 0.35s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .seal { display: inline-block; width: 36px; height: 36px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #a83832 0%, #6f1f1a 60%, #3d0f0c 100%); box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset -2px -3px 8px rgba(0,0,0,0.4); position: relative; vertical-align: middle; }
+  .seal::after { content: "✦"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #f4c05a; font-size: 18px; text-shadow: 0 1px 0 rgba(0,0,0,0.4); }
   .cell.empty { cursor: cell; }
-
-  .empty-hint {
-    text-align: center;
-    padding: 40px 20px;
-    font-family: "IM Fell English", serif;
-    font-style: italic;
-    color: var(--ink-faded);
-    font-size: 16px;
-  }
 
   @media (max-width: 900px) {
     .cal-screen { padding: 16px; }
@@ -894,6 +549,7 @@
     .cell { height: 34px; }
     .app-header h1 { font-size: 24px; }
     .cal-topbar { flex-wrap: wrap; }
+    .user-screen { padding: 20px 16px 60px; }
   }
 </style>
 </head>
@@ -918,58 +574,84 @@
 /* global React, ReactDOM */
 const { useState, useEffect, useRef, useCallback } = React;
 
+// ── GitHub config ──────────────────────────────────────────
+const GITHUB_OWNER = "cfrancolibert";
+const GITHUB_REPO  = "agenda-rol";
+const GITHUB_FILE  = "data.json";
+const GITHUB_API   = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+const GITHUB_RAW   = `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/master/${GITHUB_FILE}`;
+
+// ── LocalStorage keys ──────────────────────────────────────
+const LS_TOKEN    = "agendarol.github_token";
+const LS_USERS    = "agendarol.users";
+const LS_SCHED    = "agendarol.schedules";
+const LS_CURRENT  = "agendarol.currentUser";
+
+// ── Defaults ───────────────────────────────────────────────
 const DEFAULT_USERS = [
-  { id: "lumia", name: "Lumia", title: "La Hechicera" },
-  { id: "yelena", name: "Yelena", title: "La Exploradora" },
-  { id: "gubta", name: "Gubta", title: "El Bárbaro" },
-  { id: "dm", name: "DM", title: "Maestro del Juego" },
+  { id: "lumia",  name: "Lumia",  title: "La Hechicera",      avatar: null },
+  { id: "yelena", name: "Yelena", title: "La Exploradora",    avatar: null },
+  { id: "gubta",  name: "Gubta",  title: "El Bárbaro",        avatar: null },
+  { id: "dm",     name: "DM",     title: "Maestro del Juego", avatar: null },
 ];
 
 const DAYS = [
-  { key: "mon", name: "Lunes", runic: "Dies Lunae" },
-  { key: "tue", name: "Martes", runic: "Dies Martis" },
+  { key: "mon", name: "Lunes",     runic: "Dies Lunae"    },
+  { key: "tue", name: "Martes",    runic: "Dies Martis"   },
   { key: "wed", name: "Miércoles", runic: "Dies Mercurii" },
-  { key: "thu", name: "Jueves", runic: "Dies Iovis" },
-  { key: "fri", name: "Viernes", runic: "Dies Veneris" },
-  { key: "sat", name: "Sábado", runic: "Dies Saturni" },
-  { key: "sun", name: "Domingo", runic: "Dies Solis" },
+  { key: "thu", name: "Jueves",    runic: "Dies Iovis"    },
+  { key: "fri", name: "Viernes",   runic: "Dies Veneris"  },
+  { key: "sat", name: "Sábado",    runic: "Dies Saturni"  },
+  { key: "sun", name: "Domingo",   runic: "Dies Solis"    },
 ];
 
 const HOURS = Array.from({ length: 17 }, (_, i) => i + 7);
-
 const STATES = ["empty", "yes", "maybe", "no"];
-const nextState = (s) => STATES[(STATES.indexOf(s || "empty") + 1) % STATES.length];
-const stateIcon = (s) => s === "yes" ? "✓" : s === "maybe" ? "?" : s === "no" ? "✕" : "";
+const nextState  = (s) => STATES[(STATES.indexOf(s || "empty") + 1) % STATES.length];
+const stateIcon  = (s) => s === "yes" ? "✓" : s === "maybe" ? "?" : s === "no" ? "✕" : "";
 const stateLabel = (s) => s === "yes" ? "Disponible" : s === "maybe" ? "Tal vez" : s === "no" ? "No disponible" : "Sin marcar";
 
-const STORAGE_USERS = "agendarol.users";
-const STORAGE_SCHED = "agendarol.schedules";
-const STORAGE_CURRENT = "agendarol.currentUser";
+// ── LocalStorage helpers ───────────────────────────────────
+const lsGet = (k, fallback) => { try { const r = localStorage.getItem(k); return r ? JSON.parse(r) : fallback; } catch { return fallback; } };
+const lsSet = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} };
 
-function loadUsers() {
-  try {
-    const raw = localStorage.getItem(STORAGE_USERS);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      if (Array.isArray(parsed) && parsed.length) return parsed;
-    }
-  } catch (_) {}
-  return DEFAULT_USERS.map(u => ({ ...u, avatar: null }));
-}
-function saveUsers(users) {
-  localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
-}
-function loadSchedules() {
-  try {
-    const raw = localStorage.getItem(STORAGE_SCHED);
-    if (raw) return JSON.parse(raw);
-  } catch (_) {}
-  return {};
-}
-function saveSchedules(s) {
-  localStorage.setItem(STORAGE_SCHED, JSON.stringify(s));
+// ── GitHub API helpers ─────────────────────────────────────
+async function ghRead(token) {
+  const res = await fetch(GITHUB_API, {
+    headers: { Authorization: `token ${token}`, Accept: "application/vnd.github.v3+json" },
+    cache: "no-store",
+  });
+  if (res.status === 404) return { data: null, sha: null };
+  if (!res.ok) throw new Error(`GitHub read error ${res.status}`);
+  const json = await res.json();
+  const data = JSON.parse(atob(json.content.replace(/\s/g, "")));
+  return { data, sha: json.sha };
 }
 
+async function ghWrite(token, data, sha) {
+  const body = {
+    message: "Update agenda data",
+    content: btoa(unescape(encodeURIComponent(JSON.stringify(data)))),
+    ...(sha ? { sha } : {}),
+  };
+  const res = await fetch(GITHUB_API, {
+    method: "PUT",
+    headers: {
+      Authorization: `token ${token}`,
+      Accept: "application/vnd.github.v3+json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(`GitHub write error ${res.status}: ${err.message || ""}`);
+  }
+  const json = await res.json();
+  return json.content.sha;
+}
+
+// ── SVG ornaments ──────────────────────────────────────────
 const FleurOrnament = () => (
   <svg viewBox="0 0 40 40" fill="currentColor" aria-hidden="true">
     <path d="M20 4 C18 10 14 13 8 14 C14 15 18 18 20 24 C22 18 26 15 32 14 C26 13 22 10 20 4 Z" />
@@ -978,46 +660,86 @@ const FleurOrnament = () => (
   </svg>
 );
 
+// ── Portrait ───────────────────────────────────────────────
 function Portrait({ user, size = 170, editable = false, onUpload }) {
   const inputRef = useRef(null);
-  const handleClick = () => { if (editable && inputRef.current) inputRef.current.click(); };
+  const handleClick = () => { if (editable) inputRef.current?.click(); };
   const handleFile = (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => onUpload && onUpload(ev.target.result);
-    reader.readAsDataURL(file);
+    const f = e.target.files?.[0]; if (!f) return;
+    const r = new FileReader();
+    r.onload = (ev) => onUpload?.(ev.target.result);
+    r.readAsDataURL(f);
   };
   return (
-    <div
-      className="portrait-frame"
-      style={{ width: size, height: size }}
-      onClick={handleClick}
-      title={editable ? "Haz clic para subir un retrato" : ""}
-    >
-      {user?.avatar ? (
-        <img src={user.avatar} alt={user.name} />
-      ) : (
-        <div className="portrait-placeholder">
-          {(user?.name || "?").charAt(0).toUpperCase()}
-        </div>
+    <div className="portrait-frame" style={{ width: size, height: size }} onClick={handleClick}>
+      {user?.avatar ? <img src={user.avatar} alt={user.name} /> : (
+        <div className="portrait-placeholder">{(user?.name || "?").charAt(0).toUpperCase()}</div>
       )}
       {editable && (
         <>
           <div className="portrait-upload-hint">Cambiar retrato</div>
-          <input
-            ref={inputRef}
-            type="file"
-            accept="image/*"
-            onChange={handleFile}
-            style={{ display: "none" }}
-          />
+          <input ref={inputRef} type="file" accept="image/*" onChange={handleFile} style={{ display: "none" }} />
         </>
       )}
     </div>
   );
 }
 
+// ── GitHub token setup modal ───────────────────────────────
+function SetupModal({ onSave, onSkip }) {
+  const [token, setToken] = useState("");
+  const [testing, setTesting] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleSave = async () => {
+    const t = token.trim();
+    if (!t) return;
+    setTesting(true); setError("");
+    try {
+      await ghRead(t);
+      onSave(t);
+    } catch {
+      setError("Token inválido o sin permisos. Verifica que tiene acceso a repositorios públicos.");
+    } finally { setTesting(false); }
+  };
+
+  return (
+    <div className="setup-overlay">
+      <div className="setup-card parchment torn">
+        <h2>Sincronizar con GitHub</h2>
+        <div className="setup-sub">
+          Conecta un token de GitHub para que todos los jugadores compartan la misma agenda desde cualquier dispositivo.
+        </div>
+        <ol className="setup-steps">
+          <li>Ve a <a href="https://github.com/settings/tokens/new" target="_blank" rel="noopener">github.com/settings/tokens/new</a></li>
+          <li>Nombre: <strong>agenda-rol</strong></li>
+          <li>Selecciona el permiso: <strong>public_repo</strong></li>
+          <li>Genera el token y pégalo aquí:</li>
+        </ol>
+        <input
+          type="password"
+          placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+          value={token}
+          onChange={(e) => setToken(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSave()}
+          autoFocus
+        />
+        <div className="setup-hint">
+          El token se guarda solo en este navegador (localStorage). No se sube al repositorio.
+        </div>
+        {error && <div className="setup-error">{error}</div>}
+        <div className="modal-actions">
+          <button className="btn ghost" onClick={onSkip}>Usar sin sincronizar</button>
+          <button className="btn primary" onClick={handleSave} disabled={!token.trim() || testing}>
+            {testing ? "Verificando…" : "Conectar"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── User selection screen ──────────────────────────────────
 function UserSelect({ users, onSelect, onUpdateUser, onCreateUser, onDeleteUser }) {
   const [creating, setCreating] = useState(false);
   const [editing, setEditing] = useState(null);
@@ -1031,74 +753,32 @@ function UserSelect({ users, onSelect, onUpdateUser, onCreateUser, onDeleteUser 
         <div className="subtitle">El Códice de Convocatoria · Elige tu estandarte</div>
         <div className="ornament"><span className="line"/><span className="seal"/><span className="line"/></div>
       </header>
-
       <p className="prompt">¿Quién se une a la partida esta vez?</p>
-
       <div className="users-grid">
         {users.map(u => (
-          <div
-            key={u.id}
-            className="user-card parchment torn"
+          <div key={u.id} className="user-card parchment torn"
             onClick={(e) => {
-              if (e.target.closest(".portrait-frame")) return;
-              if (e.target.closest(".card-actions")) return;
+              if (e.target.closest(".portrait-frame") || e.target.closest(".card-actions")) return;
               onSelect(u.id);
-            }}
-          >
+            }}>
             <div className="card-actions">
-              <button
-                className="card-action-btn"
-                title="Editar"
-                onClick={(e) => { e.stopPropagation(); setEditing(u); }}
-              >✎</button>
-              <button
-                className="card-action-btn danger"
-                title="Eliminar"
-                onClick={(e) => { e.stopPropagation(); setConfirmDelete(u); }}
-              >✕</button>
+              <button className="card-action-btn" title="Editar" onClick={(e) => { e.stopPropagation(); setEditing(u); }}>✎</button>
+              <button className="card-action-btn danger" title="Eliminar" onClick={(e) => { e.stopPropagation(); setConfirmDelete(u); }}>✕</button>
             </div>
-            <Portrait
-              user={u}
-              editable
-              onUpload={(dataUrl) => onUpdateUser(u.id, { avatar: dataUrl })}
-            />
+            <Portrait user={u} editable onUpload={(d) => onUpdateUser(u.id, { avatar: d })} />
             <div className="user-name">{u.name}</div>
             <div className="user-title">{u.title}</div>
           </div>
         ))}
-
-        <div
-          className="user-card new-user-card parchment torn"
-          onClick={() => setCreating(true)}
-        >
-          <div className="portrait-frame" style={{ width: 170, height: 170 }}>
-            <div className="new-user-plus">+</div>
-          </div>
+        <div className="user-card new-user-card parchment torn" onClick={() => setCreating(true)}>
+          <div className="portrait-frame" style={{ width: 170, height: 170 }}><div className="new-user-plus">+</div></div>
           <div className="user-name">Nuevo</div>
           <div className="user-title">Forjar nuevo aventurero</div>
         </div>
       </div>
-
-      {creating && (
-        <CreateUserModal
-          onCancel={() => setCreating(false)}
-          onCreate={(user) => { onCreateUser(user); setCreating(false); onSelect(user.id); }}
-        />
-      )}
-      {editing && (
-        <EditUserModal
-          user={editing}
-          onCancel={() => setEditing(null)}
-          onSave={(patch) => { onUpdateUser(editing.id, patch); setEditing(null); }}
-        />
-      )}
-      {confirmDelete && (
-        <ConfirmDeleteModal
-          user={confirmDelete}
-          onCancel={() => setConfirmDelete(null)}
-          onConfirm={() => { onDeleteUser(confirmDelete.id); setConfirmDelete(null); }}
-        />
-      )}
+      {creating && <CreateUserModal onCancel={() => setCreating(false)} onCreate={(u) => { onCreateUser(u); setCreating(false); onSelect(u.id); }} />}
+      {editing && <EditUserModal user={editing} onCancel={() => setEditing(null)} onSave={(p) => { onUpdateUser(editing.id, p); setEditing(null); }} />}
+      {confirmDelete && <ConfirmDeleteModal user={confirmDelete} onCancel={() => setConfirmDelete(null)} onConfirm={() => { onDeleteUser(confirmDelete.id); setConfirmDelete(null); }} />}
     </div>
   );
 }
@@ -1108,51 +788,23 @@ function EditUserModal({ user, onCancel, onSave }) {
   const [title, setTitle] = useState(user.title || "");
   const [avatar, setAvatar] = useState(user.avatar || null);
   const inputRef = useRef(null);
-
-  const pickFile = () => inputRef.current?.click();
-  const handleFile = (e) => {
-    const f = e.target.files?.[0];
-    if (!f) return;
-    const r = new FileReader();
-    r.onload = (ev) => setAvatar(ev.target.result);
-    r.readAsDataURL(f);
-  };
-  const handleSave = () => {
-    const n = name.trim();
-    if (!n) return;
-    onSave({ name: n, title: title.trim() || "Aventurero", avatar });
-  };
-
+  const handleFile = (e) => { const f = e.target.files?.[0]; if (!f) return; const r = new FileReader(); r.onload = (ev) => setAvatar(ev.target.result); r.readAsDataURL(f); };
+  const handleSave = () => { const n = name.trim(); if (!n) return; onSave({ name: n, title: title.trim() || "Aventurero", avatar }); };
   return (
     <div className="modal-backdrop" onClick={onCancel}>
       <div className="modal parchment torn" onClick={(e) => e.stopPropagation()}>
         <h2>Editar Aventurero</h2>
         <div className="modal-sub">Modifica las inscripciones del Códice</div>
         <div className="modal-portrait">
-          <div className="portrait-frame" style={{ width: 130, height: 130 }} onClick={pickFile}>
-            {avatar ? <img src={avatar} alt="" /> : (
-              <div className="portrait-placeholder">{name.charAt(0).toUpperCase() || "?"}</div>
-            )}
+          <div className="portrait-frame" style={{ width: 130, height: 130 }} onClick={() => inputRef.current?.click()}>
+            {avatar ? <img src={avatar} alt="" /> : <div className="portrait-placeholder">{name.charAt(0).toUpperCase() || "?"}</div>}
             <div className="portrait-upload-hint">Cambiar retrato</div>
             <input ref={inputRef} type="file" accept="image/*" onChange={handleFile} style={{ display: "none" }} />
           </div>
         </div>
-        <input
-          type="text"
-          placeholder="Nombre del personaje"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          autoFocus
-          onKeyDown={(e) => e.key === "Enter" && handleSave()}
-        />
+        <input type="text" placeholder="Nombre del personaje" value={name} onChange={(e) => setName(e.target.value)} autoFocus onKeyDown={(e) => e.key === "Enter" && handleSave()} />
         <div style={{ height: 10 }} />
-        <input
-          type="text"
-          placeholder="Título o clase"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSave()}
-        />
+        <input type="text" placeholder="Título o clase" value={title} onChange={(e) => setTitle(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleSave()} />
         <div className="modal-actions">
           <button className="btn ghost" onClick={onCancel}>Cancelar</button>
           <button className="btn primary" onClick={handleSave} disabled={!name.trim()}>Guardar</button>
@@ -1173,11 +825,7 @@ function ConfirmDeleteModal({ user, onCancel, onConfirm }) {
         </div>
         <div className="modal-actions">
           <button className="btn ghost" onClick={onCancel}>Cancelar</button>
-          <button
-            className="btn primary"
-            style={{ background: "linear-gradient(180deg, #a93d36 0%, #6a1e1a 100%)", borderColor: "var(--garnet-deep)" }}
-            onClick={onConfirm}
-          >Desterrar</button>
+          <button className="btn primary" style={{ background: "linear-gradient(180deg, #a93d36 0%, #6a1e1a 100%)", borderColor: "var(--garnet-deep)" }} onClick={onConfirm}>Desterrar</button>
         </div>
       </div>
     </div>
@@ -1189,52 +837,23 @@ function CreateUserModal({ onCancel, onCreate }) {
   const [title, setTitle] = useState("");
   const [avatar, setAvatar] = useState(null);
   const inputRef = useRef(null);
-
-  const pickFile = () => inputRef.current?.click();
-  const handleFile = (e) => {
-    const f = e.target.files?.[0];
-    if (!f) return;
-    const r = new FileReader();
-    r.onload = (ev) => setAvatar(ev.target.result);
-    r.readAsDataURL(f);
-  };
-  const handleCreate = () => {
-    const n = name.trim();
-    if (!n) return;
-    const id = "user_" + Date.now().toString(36);
-    onCreate({ id, name: n, title: title.trim() || "Aventurero", avatar });
-  };
-
+  const handleFile = (e) => { const f = e.target.files?.[0]; if (!f) return; const r = new FileReader(); r.onload = (ev) => setAvatar(ev.target.result); r.readAsDataURL(f); };
+  const handleCreate = () => { const n = name.trim(); if (!n) return; onCreate({ id: "user_" + Date.now().toString(36), name: n, title: title.trim() || "Aventurero", avatar }); };
   return (
     <div className="modal-backdrop" onClick={onCancel}>
       <div className="modal parchment torn" onClick={(e) => e.stopPropagation()}>
         <h2>Forjar Aventurero</h2>
         <div className="modal-sub">Inscribe un nuevo nombre en el Códice</div>
         <div className="modal-portrait">
-          <div className="portrait-frame" style={{ width: 130, height: 130 }} onClick={pickFile}>
-            {avatar ? <img src={avatar} alt="" /> : (
-              <div className="portrait-placeholder">{name.charAt(0).toUpperCase() || "?"}</div>
-            )}
+          <div className="portrait-frame" style={{ width: 130, height: 130 }} onClick={() => inputRef.current?.click()}>
+            {avatar ? <img src={avatar} alt="" /> : <div className="portrait-placeholder">{name.charAt(0).toUpperCase() || "?"}</div>}
             <div className="portrait-upload-hint">Subir retrato</div>
             <input ref={inputRef} type="file" accept="image/*" onChange={handleFile} style={{ display: "none" }} />
           </div>
         </div>
-        <input
-          type="text"
-          placeholder="Nombre del personaje"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          autoFocus
-          onKeyDown={(e) => e.key === "Enter" && handleCreate()}
-        />
+        <input type="text" placeholder="Nombre del personaje" value={name} onChange={(e) => setName(e.target.value)} autoFocus onKeyDown={(e) => e.key === "Enter" && handleCreate()} />
         <div style={{ height: 10 }} />
-        <input
-          type="text"
-          placeholder="Título o clase (opcional)"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleCreate()}
-        />
+        <input type="text" placeholder="Título o clase (opcional)" value={title} onChange={(e) => setTitle(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleCreate()} />
         <div className="modal-actions">
           <button className="btn ghost" onClick={onCancel}>Cancelar</button>
           <button className="btn primary" onClick={handleCreate} disabled={!name.trim()}>Inscribir</button>
@@ -1244,31 +863,28 @@ function CreateUserModal({ onCancel, onCreate }) {
   );
 }
 
+// ── Calendar screen ────────────────────────────────────────
 function CalendarScreen({ users, currentUserId, schedules, setSchedules, onSwitchUser, onUpdateUser, onSealPact }) {
   const [view, setView] = useState("mine");
   const [hover, setHover] = useState(null);
-
   const user = users.find(u => u.id === currentUserId);
   const mySchedule = schedules[currentUserId] || {};
-
   const painting = useRef(null);
 
   const setCellState = useCallback((key, state) => {
     setSchedules(prev => {
-      const curUser = { ...(prev[currentUserId] || {}) };
-      if (state === "empty") delete curUser[key];
-      else curUser[key] = state;
-      return { ...prev, [currentUserId]: curUser };
+      const cur = { ...(prev[currentUserId] || {}) };
+      if (state === "empty") delete cur[key]; else cur[key] = state;
+      return { ...prev, [currentUserId]: cur };
     });
   }, [currentUserId, setSchedules]);
 
   const handleCellDown = (key, e) => {
     if (view !== "mine") return;
     e.preventDefault();
-    const current = mySchedule[key] || "empty";
-    const paintState = nextState(current);
-    painting.current = { paintState, modified: new Set([key]) };
-    setCellState(key, paintState);
+    const ps = nextState(mySchedule[key] || "empty");
+    painting.current = { paintState: ps, modified: new Set([key]) };
+    setCellState(key, ps);
   };
   const handleCellEnter = (key) => {
     if (!painting.current || view !== "mine") return;
@@ -1276,30 +892,21 @@ function CalendarScreen({ users, currentUserId, schedules, setSchedules, onSwitc
     painting.current.modified.add(key);
     setCellState(key, painting.current.paintState);
   };
-
   useEffect(() => {
-    const endPaint = () => { painting.current = null; };
-    window.addEventListener("mouseup", endPaint);
-    window.addEventListener("touchend", endPaint);
-    return () => {
-      window.removeEventListener("mouseup", endPaint);
-      window.removeEventListener("touchend", endPaint);
-    };
+    const end = () => { painting.current = null; };
+    window.addEventListener("mouseup", end);
+    window.addEventListener("touchend", end);
+    return () => { window.removeEventListener("mouseup", end); window.removeEventListener("touchend", end); };
   }, []);
 
   const cellKey = (dayKey, hour) => `${dayKey}-${hour}`;
-  const fmtHour = (h) => {
-    if (h === 0) return "12am";
-    if (h === 12) return "12pm";
-    return h < 12 ? `${h}am` : `${h - 12}pm`;
-  };
+  const fmtHour = (h) => h === 0 ? "12am" : h === 12 ? "12pm" : h < 12 ? `${h}am` : `${h-12}pm`;
 
-  const getCombinedForCell = (key) => {
+  const getCombined = (key) => {
     const yes = [], maybe = [];
     for (const u of users) {
       const s = schedules[u.id]?.[key];
-      if (s === "yes") yes.push(u);
-      else if (s === "maybe") maybe.push(u);
+      if (s === "yes") yes.push(u); else if (s === "maybe") maybe.push(u);
     }
     return { yes, maybe, all: yes.length === users.length && users.length > 0 };
   };
@@ -1309,11 +916,6 @@ function CalendarScreen({ users, currentUserId, schedules, setSchedules, onSwitc
     setSchedules(prev => ({ ...prev, [currentUserId]: {} }));
   };
 
-  const onCellHover = (e, key, day, hour) => {
-    if (view !== "combined") return;
-    setHover({ x: e.clientX, y: e.clientY, key, day, hour });
-  };
-
   return (
     <div className="screen cal-screen">
       <header className="app-header">
@@ -1321,35 +923,23 @@ function CalendarScreen({ users, currentUserId, schedules, setSchedules, onSwitc
         <h1>Agenda Rol</h1>
         <div className="subtitle">La Semana del Cónclave · Marca tus horas</div>
       </header>
-
       <div className="cal-topbar">
         <div className="current-user">
           <div className="mini-portrait">
-            {user?.avatar
-              ? <img src={user.avatar} alt={user.name} />
-              : <div className="portrait-placeholder">{(user?.name || "?").charAt(0).toUpperCase()}</div>}
+            {user?.avatar ? <img src={user.avatar} alt={user.name} /> : <div className="portrait-placeholder">{(user?.name||"?").charAt(0).toUpperCase()}</div>}
           </div>
           <div className="who">
             <span className="label">Jugando como</span>
             <span className="name">{user?.name}</span>
           </div>
         </div>
-
         <div className="view-tabs">
           <button className={view === "mine" ? "active" : ""} onClick={() => setView("mine")}>Mi agenda</button>
           <button className={view === "combined" ? "active" : ""} onClick={() => setView("combined")}>Coincidencias</button>
         </div>
-
         <div className="topbar-actions">
-          {view === "mine" && (
-            <button className="btn ghost" onClick={resetMine} title="Borrar mi agenda">Limpiar</button>
-          )}
-          {view === "mine" && (
-            <button className="seal-btn" onClick={onSealPact} title="Sellar y confirmar tu agenda">
-              <span className="wax-dot"></span>
-              Sellar Pacto
-            </button>
-          )}
+          {view === "mine" && <button className="btn ghost" onClick={resetMine}>Limpiar</button>}
+          {view === "mine" && <button className="seal-btn" onClick={onSealPact}><span className="wax-dot"></span>Sellar Pacto</button>}
           <button className="btn" onClick={onSwitchUser}>Cambiar jugador</button>
         </div>
       </div>
@@ -1366,9 +956,9 @@ function CalendarScreen({ users, currentUserId, schedules, setSchedules, onSwitc
       ) : (
         <div className="legend">
           <span className="title">Coincidencias:</span>
-          <div className="legend-item"><span className="legend-swatch sw-yes"></span>Disponibles (anillo verde)</div>
-          <div className="legend-item"><span className="legend-swatch sw-maybe"></span>Tal vez (anillo ámbar)</div>
-          <div className="legend-item"><span style={{color:"#b8893b",fontSize:18,textShadow:"0 0 8px #e3c066"}}>★</span>Todos disponibles</div>
+          <div className="legend-item"><span className="legend-swatch sw-yes"></span>Disponibles</div>
+          <div className="legend-item"><span className="legend-swatch sw-maybe"></span>Tal vez</div>
+          <div className="legend-item"><span style={{color:"#b8893b",fontSize:18}}>★</span>Todos disponibles</div>
           <span className="hint">Pasa el cursor para ver quién puede en ese bloque.</span>
         </div>
       )}
@@ -1376,13 +966,7 @@ function CalendarScreen({ users, currentUserId, schedules, setSchedules, onSwitc
       <div className="cal-wrap parchment torn">
         <div className="grid">
           <div className="corner"></div>
-          {DAYS.map(d => (
-            <div key={d.key} className="day-head">
-              {d.name}
-              <span className="runic">{d.runic}</span>
-            </div>
-          ))}
-
+          {DAYS.map(d => <div key={d.key} className="day-head">{d.name}<span className="runic">{d.runic}</span></div>)}
           {HOURS.map(hour => (
             <React.Fragment key={hour}>
               <div className="hour-label">{fmtHour(hour)}</div>
@@ -1391,38 +975,24 @@ function CalendarScreen({ users, currentUserId, schedules, setSchedules, onSwitc
                 if (view === "mine") {
                   const state = mySchedule[key] || "empty";
                   return (
-                    <div
-                      key={key}
-                      className={`cell ${state} ${state === "empty" ? "empty" : ""}`}
+                    <div key={key} className={`cell ${state} ${state==="empty"?"empty":""}`}
                       onMouseDown={(e) => handleCellDown(key, e)}
                       onMouseEnter={() => handleCellEnter(key)}
-                      onTouchStart={(e) => handleCellDown(key, e)}
-                    >
+                      onTouchStart={(e) => handleCellDown(key, e)}>
                       {state !== "empty" && <span className="state-icon">{stateIcon(state)}</span>}
                     </div>
                   );
                 } else {
-                  const combo = getCombinedForCell(key);
+                  const combo = getCombined(key);
                   const total = combo.yes.length + combo.maybe.length;
                   return (
-                    <div
-                      key={key}
-                      className={`cell combined ${combo.all ? "all-available" : ""}`}
-                      onMouseMove={(e) => onCellHover(e, key, day, hour)}
-                      onMouseLeave={() => setHover(null)}
-                    >
+                    <div key={key} className={`cell combined ${combo.all?"all-available":""}`}
+                      onMouseMove={(e) => setHover({ x: e.clientX, y: e.clientY, key, day, hour })}
+                      onMouseLeave={() => setHover(null)}>
                       {total > 0 && (
                         <div className="stack">
-                          {combo.yes.map(u => (
-                            <span key={u.id} className="avatar-dot yes" title={u.name}>
-                              {u.avatar ? <img src={u.avatar} alt={u.name}/> : u.name.charAt(0).toUpperCase()}
-                            </span>
-                          ))}
-                          {combo.maybe.map(u => (
-                            <span key={u.id} className="avatar-dot maybe" title={u.name + " (tal vez)"}>
-                              {u.avatar ? <img src={u.avatar} alt={u.name}/> : u.name.charAt(0).toUpperCase()}
-                            </span>
-                          ))}
+                          {combo.yes.map(u => <span key={u.id} className="avatar-dot yes">{u.avatar ? <img src={u.avatar} alt={u.name}/> : u.name.charAt(0)}</span>)}
+                          {combo.maybe.map(u => <span key={u.id} className="avatar-dot maybe">{u.avatar ? <img src={u.avatar} alt={u.name}/> : u.name.charAt(0)}</span>)}
                         </div>
                       )}
                     </div>
@@ -1433,184 +1003,180 @@ function CalendarScreen({ users, currentUserId, schedules, setSchedules, onSwitc
           ))}
         </div>
       </div>
-
       {hover && view === "combined" && (
-        <CombinedTooltip
-          x={hover.x}
-          y={hover.y}
-          day={hover.day}
-          hour={hover.hour}
-          users={users}
-          schedules={schedules}
-          cellKey={cellKey(hover.day.key, hover.hour)}
-          fmtHour={fmtHour}
-        />
+        <div className="tooltip" style={{ left: Math.min(hover.x+14, window.innerWidth-220), top: Math.min(hover.y+14, window.innerHeight-180) }}>
+          <div className="tt-title">{hover.day.name} · {fmtHour(hover.hour)}–{fmtHour(hover.hour+1)}</div>
+          {users.map(u => {
+            const s = schedules[u.id]?.[hover.key] || "empty";
+            return (
+              <div key={u.id} className="tt-row">
+                <span className="tt-dot" style={{ background: s==="yes"?"#3a6f34":s==="maybe"?"#b07c1c":s==="no"?"#72221d":"rgba(138,107,58,0.4)" }}/>
+                <span style={{ fontWeight: 600 }}>{u.name}</span>
+                <span style={{ marginLeft: "auto", color: "var(--ink-faded)", fontStyle: "italic", fontSize: 12 }}>{stateLabel(s)}</span>
+              </div>
+            );
+          })}
+        </div>
       )}
     </div>
   );
 }
 
-function CombinedTooltip({ x, y, day, hour, users, schedules, cellKey, fmtHour }) {
-  const rows = users.map(u => {
-    const s = schedules[u.id]?.[cellKey] || "empty";
-    return { user: u, state: s };
-  });
-  const left = Math.min(x + 14, window.innerWidth - 220);
-  const top = Math.min(y + 14, window.innerHeight - 180);
-  return (
-    <div className="tooltip" style={{ left, top }}>
-      <div className="tt-title">{day.name} · {fmtHour(hour)}–{fmtHour(hour + 1)}</div>
-      {rows.map(r => (
-        <div key={r.user.id} className="tt-row">
-          <span className="tt-dot" style={{
-            background: r.state === "yes" ? "#3a6f34"
-                      : r.state === "maybe" ? "#b07c1c"
-                      : r.state === "no" ? "#72221d"
-                      : "rgba(138,107,58,0.4)"
-          }}/>
-          <span style={{ fontWeight: 600 }}>{r.user.name}</span>
-          <span style={{ marginLeft: "auto", color: "var(--ink-faded)", fontStyle: "italic", fontSize: 12 }}>
-            {stateLabel(r.state)}
-          </span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
+// ── Pact overlay ───────────────────────────────────────────
 function PactOverlay() {
   return (
     <div className="pact-overlay">
       <div className="pact-title">Tu compromiso<br/>ha sido sellado</div>
-      <div className="pact-ornament">
-        <span className="line"></span>
-        <span className="star">✦</span>
-        <span className="line"></span>
-      </div>
-      <ContractSVG />
+      <div className="pact-ornament"><span className="line"></span><span className="star">✦</span><span className="line"></span></div>
+      <svg className="pact-contract" viewBox="0 0 520 460" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="parchGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#f4e8cf"/><stop offset="50%" stopColor="#e6d3a6"/><stop offset="100%" stopColor="#c9ac77"/>
+          </linearGradient>
+          <radialGradient id="waxGrad" cx="0.35" cy="0.3" r="0.75">
+            <stop offset="0%" stopColor="#c84640"/><stop offset="55%" stopColor="#7a1f1a"/><stop offset="100%" stopColor="#3d0f0c"/>
+          </radialGradient>
+          <filter id="paperNoise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/>
+            <feColorMatrix values="0 0 0 0 0.55  0 0 0 0 0.42  0 0 0 0 0.22  0 0 0 0.12 0"/>
+            <feComposite in2="SourceGraphic" operator="in"/>
+          </filter>
+        </defs>
+        <path d="M 40 30 C 60 22, 120 28, 180 24 C 260 18, 340 30, 420 22 C 460 20, 480 28, 488 50 L 486 200 C 490 260, 478 320, 488 400 C 482 420, 460 430, 420 428 C 340 432, 260 426, 180 432 C 120 434, 70 428, 40 426 C 24 418, 30 360, 28 280 C 32 200, 22 120, 32 60 Z" fill="url(#parchGrad)" stroke="#8a6b3a" strokeWidth="1.2"/>
+        <path d="M 40 30 C 60 22, 120 28, 180 24 C 260 18, 340 30, 420 22 C 460 20, 480 28, 488 50 L 486 200 C 490 260, 478 320, 488 400 C 482 420, 460 430, 420 428 C 340 432, 260 426, 180 432 C 120 434, 70 428, 40 426 C 24 418, 30 360, 28 280 C 32 200, 22 120, 32 60 Z" fill="url(#paperNoise)" opacity="0.9"/>
+        <text x="260" y="72" textAnchor="middle" fontFamily="Cinzel Decorative, serif" fontWeight="900" fontSize="22" fill="#2a1b0c" letterSpacing="4">PACTO DE CÓNCLAVE</text>
+        <line x1="140" y1="86" x2="380" y2="86" stroke="#8a6218" strokeWidth="1"/>
+        <line x1="160" y1="92" x2="360" y2="92" stroke="#8a6218" strokeWidth="0.6"/>
+        {[120,138,156,174,192,210,228,246,264].map((y,i) => <line key={i} x1={70+(i%2)*4} y1={y} x2={i===8?280:440-(i%3)*20} y2={y} stroke="#4a3420" strokeWidth="1" opacity="0.55" strokeLinecap="round"/>)}
+        <line x1="80" y1="332" x2="300" y2="332" stroke="#2a1b0c" strokeWidth="1"/>
+        <text x="90" y="350" fontFamily="IM Fell English, serif" fontStyle="italic" fontSize="13" fill="#4a3420">Firma del Aventurero</text>
+        <path d="M 100 326 Q 120 310, 140 324 T 180 326 Q 200 316, 220 324 L 240 330" stroke="#2a1b0c" strokeWidth="1.6" fill="none" strokeLinecap="round"/>
+        <g transform="translate(400, 350)">
+          <circle cx="0" cy="0" r="46" fill="url(#waxGrad)"/>
+          <circle cx="0" cy="0" r="46" fill="none" stroke="#2a0a08" strokeWidth="1" opacity="0.7"/>
+          <path d="M -32 28 Q -28 48, -20 52 Q -14 42, -18 30 Z" fill="url(#waxGrad)"/>
+          <path d="M 30 -30 Q 40 -26, 44 -18 Q 36 -14, 28 -22 Z" fill="url(#waxGrad)" opacity="0.85"/>
+          <circle cx="0" cy="0" r="36" fill="none" stroke="#3d0f0c" strokeWidth="1.2" opacity="0.6"/>
+          <text x="0" y="10" textAnchor="middle" fontFamily="Cinzel Decorative, serif" fontWeight="900" fontSize="34" fill="#e3c066">✦</text>
+          <ellipse cx="-14" cy="-16" rx="14" ry="8" fill="rgba(255,220,180,0.25)"/>
+        </g>
+      </svg>
       <div className="pact-sub">— Que los dioses atestigüen esta palabra —</div>
     </div>
   );
 }
 
-function ContractSVG() {
+// ── Sync status pill ───────────────────────────────────────
+function SyncBar({ status, onConfigure }) {
+  const labels = { synced: "Sincronizado", syncing: "Guardando…", error: "Error de sincronización", notoken: "Sin sincronización" };
   return (
-    <svg className="pact-contract" viewBox="0 0 520 460" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <linearGradient id="parchGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#f4e8cf"/>
-          <stop offset="50%" stopColor="#e6d3a6"/>
-          <stop offset="100%" stopColor="#c9ac77"/>
-        </linearGradient>
-        <radialGradient id="waxGrad" cx="0.35" cy="0.3" r="0.75">
-          <stop offset="0%" stopColor="#c84640"/>
-          <stop offset="55%" stopColor="#7a1f1a"/>
-          <stop offset="100%" stopColor="#3d0f0c"/>
-        </radialGradient>
-        <filter id="paperNoise">
-          <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/>
-          <feColorMatrix values="0 0 0 0 0.55  0 0 0 0 0.42  0 0 0 0 0.22  0 0 0 0.12 0"/>
-          <feComposite in2="SourceGraphic" operator="in"/>
-        </filter>
-      </defs>
-      <path
-        d="M 40 30 C 60 22, 120 28, 180 24 C 260 18, 340 30, 420 22 C 460 20, 480 28, 488 50 L 486 200 C 490 260, 478 320, 488 400 C 482 420, 460 430, 420 428 C 340 432, 260 426, 180 432 C 120 434, 70 428, 40 426 C 24 418, 30 360, 28 280 C 32 200, 22 120, 32 60 Z"
-        fill="url(#parchGrad)"
-        stroke="#8a6b3a"
-        strokeWidth="1.2"
-      />
-      <path
-        d="M 40 30 C 60 22, 120 28, 180 24 C 260 18, 340 30, 420 22 C 460 20, 480 28, 488 50 L 486 200 C 490 260, 478 320, 488 400 C 482 420, 460 430, 420 428 C 340 432, 260 426, 180 432 C 120 434, 70 428, 40 426 C 24 418, 30 360, 28 280 C 32 200, 22 120, 32 60 Z"
-        fill="url(#paperNoise)"
-        opacity="0.9"
-      />
-      <text x="260" y="72" textAnchor="middle" fontFamily="Cinzel Decorative, serif" fontWeight="900" fontSize="22" fill="#2a1b0c" letterSpacing="4">
-        PACTO DE CÓNCLAVE
-      </text>
-      <line x1="140" y1="86" x2="380" y2="86" stroke="#8a6218" strokeWidth="1"/>
-      <line x1="160" y1="92" x2="360" y2="92" stroke="#8a6218" strokeWidth="0.6"/>
-      {[120, 138, 156, 174, 192, 210, 228, 246, 264].map((y, i) => (
-        <line
-          key={i}
-          x1={70 + (i % 2) * 4}
-          y1={y}
-          x2={i === 8 ? 280 : 440 - (i % 3) * 20}
-          y2={y}
-          stroke="#4a3420"
-          strokeWidth="1"
-          opacity="0.55"
-          strokeLinecap="round"
-        />
-      ))}
-      <line x1="80" y1="332" x2="300" y2="332" stroke="#2a1b0c" strokeWidth="1"/>
-      <text x="90" y="350" fontFamily="IM Fell English, serif" fontStyle="italic" fontSize="13" fill="#4a3420">Firma del Aventurero</text>
-      <path d="M 100 326 Q 120 310, 140 324 T 180 326 Q 200 316, 220 324 L 240 330" stroke="#2a1b0c" strokeWidth="1.6" fill="none" strokeLinecap="round"/>
-      <g transform="translate(400, 350)">
-        <circle cx="0" cy="0" r="46" fill="url(#waxGrad)" />
-        <circle cx="0" cy="0" r="46" fill="none" stroke="#2a0a08" strokeWidth="1" opacity="0.7"/>
-        <path d="M -32 28 Q -28 48, -20 52 Q -14 42, -18 30 Z" fill="url(#waxGrad)"/>
-        <path d="M 30 -30 Q 40 -26, 44 -18 Q 36 -14, 28 -22 Z" fill="url(#waxGrad)" opacity="0.85"/>
-        <circle cx="0" cy="0" r="36" fill="none" stroke="#3d0f0c" strokeWidth="1.2" opacity="0.6"/>
-        <text x="0" y="10" textAnchor="middle" fontFamily="Cinzel Decorative, serif" fontWeight="900" fontSize="34" fill="#e3c066">✦</text>
-        <ellipse cx="-14" cy="-16" rx="14" ry="8" fill="rgba(255,220,180,0.25)"/>
-      </g>
-    </svg>
+    <div className={`sync-bar ${status}`} onClick={onConfigure} title="Configurar sincronización GitHub">
+      <span className="sync-dot"></span>
+      {labels[status]}
+    </div>
   );
 }
 
+// ── Root App ───────────────────────────────────────────────
 function App() {
-  const [users, setUsers] = useState(() => loadUsers());
-  const [schedules, setSchedules] = useState(() => loadSchedules());
-  const [currentUserId, setCurrentUserId] = useState(() => {
-    try { return localStorage.getItem(STORAGE_CURRENT) || null; } catch { return null; }
-  });
-  const [sealing, setSealing] = useState(false);
+  const [token, setToken]             = useState(() => localStorage.getItem(LS_TOKEN) || "");
+  const [showSetup, setShowSetup]     = useState(false);
+  const [users, setUsers]             = useState(() => lsGet(LS_USERS, null) || DEFAULT_USERS);
+  const [schedules, setSchedules]     = useState(() => lsGet(LS_SCHED, {}));
+  const [currentUserId, setCurrentUserId] = useState(() => localStorage.getItem(LS_CURRENT) || null);
+  const [sealing, setSealing]         = useState(false);
+  const [syncStatus, setSyncStatus]   = useState("notoken");
+  const shaRef    = useRef(null);
+  const saveTimer = useRef(null);
 
-  useEffect(() => { saveUsers(users); }, [users]);
-  useEffect(() => { saveSchedules(schedules); }, [schedules]);
+  // Show setup on first load if no token
   useEffect(() => {
-    if (currentUserId) localStorage.setItem(STORAGE_CURRENT, currentUserId);
-    else localStorage.removeItem(STORAGE_CURRENT);
+    if (!token) setShowSetup(true);
+  }, []);
+
+  // Load data from GitHub on mount (if token)
+  useEffect(() => {
+    if (!token) return;
+    setSyncStatus("syncing");
+    ghRead(token).then(({ data, sha }) => {
+      shaRef.current = sha;
+      if (data) {
+        if (data.users)     { setUsers(data.users);     lsSet(LS_USERS, data.users); }
+        if (data.schedules) { setSchedules(data.schedules); lsSet(LS_SCHED, data.schedules); }
+      }
+      setSyncStatus("synced");
+    }).catch(() => setSyncStatus("error"));
+  }, [token]);
+
+  // Persist to localStorage + debounce GitHub sync
+  useEffect(() => { lsSet(LS_USERS, users); }, [users]);
+  useEffect(() => { lsSet(LS_SCHED, schedules); }, [schedules]);
+  useEffect(() => {
+    if (currentUserId) localStorage.setItem(LS_CURRENT, currentUserId);
+    else localStorage.removeItem(LS_CURRENT);
   }, [currentUserId]);
 
-  const updateUser = (id, patch) => {
-    setUsers(prev => prev.map(u => u.id === id ? { ...u, ...patch } : u));
-  };
-  const createUser = (user) => {
-    setUsers(prev => [...prev, user]);
-  };
-  const deleteUser = (id) => {
-    setUsers(prev => prev.filter(u => u.id !== id));
+  const triggerSync = useCallback((newUsers, newSchedules) => {
+    if (!token) return;
+    clearTimeout(saveTimer.current);
+    setSyncStatus("syncing");
+    saveTimer.current = setTimeout(async () => {
+      try {
+        // Read current SHA first to avoid conflicts
+        const { sha } = await ghRead(token);
+        shaRef.current = sha;
+        const newSha = await ghWrite(token, { users: newUsers, schedules: newSchedules }, sha);
+        shaRef.current = newSha;
+        setSyncStatus("synced");
+      } catch {
+        setSyncStatus("error");
+      }
+    }, 1500);
+  }, [token]);
+
+  const updateUsers = (newUsers) => { setUsers(newUsers); triggerSync(newUsers, schedules); };
+  const updateSchedules = (updater) => {
     setSchedules(prev => {
-      const next = { ...prev };
-      delete next[id];
+      const next = typeof updater === "function" ? updater(prev) : updater;
+      triggerSync(users, next);
       return next;
     });
+  };
+
+  const updateUser = (id, patch) => updateUsers(users.map(u => u.id === id ? { ...u, ...patch } : u));
+  const createUser = (u) => updateUsers([...users, u]);
+  const deleteUser = (id) => {
+    const newUsers = users.filter(u => u.id !== id);
+    const newSched = { ...schedules }; delete newSched[id];
+    setUsers(newUsers); setSchedules(newSched); triggerSync(newUsers, newSched);
     if (currentUserId === id) setCurrentUserId(null);
   };
 
   const sealPact = () => {
     setSealing(true);
-    setTimeout(() => {
-      setSealing(false);
-      setCurrentUserId(null);
-    }, 4200);
+    setTimeout(() => { setSealing(false); setCurrentUserId(null); }, 4200);
   };
 
+  const handleSaveToken = (t) => {
+    localStorage.setItem(LS_TOKEN, t);
+    setToken(t);
+    setShowSetup(false);
+  };
+  const handleSkipSetup = () => setShowSetup(false);
+
   useEffect(() => {
-    if (currentUserId && !users.find(u => u.id === currentUserId)) {
-      setCurrentUserId(null);
-    }
+    if (currentUserId && !users.find(u => u.id === currentUserId)) setCurrentUserId(null);
   }, [users, currentUserId]);
 
   return (
     <>
+      {showSetup && <SetupModal onSave={handleSaveToken} onSkip={handleSkipSetup} />}
       {currentUserId ? (
         <CalendarScreen
           users={users}
           currentUserId={currentUserId}
           schedules={schedules}
-          setSchedules={setSchedules}
+          setSchedules={updateSchedules}
           onSwitchUser={() => setCurrentUserId(null)}
           onUpdateUser={updateUser}
           onSealPact={sealPact}
@@ -1625,6 +1191,7 @@ function App() {
         />
       )}
       {sealing && <PactOverlay />}
+      <SyncBar status={token ? syncStatus : "notoken"} onConfigure={() => setShowSetup(true)} />
     </>
   );
 }
