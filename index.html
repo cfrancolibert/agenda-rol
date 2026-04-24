@@ -624,7 +624,9 @@ async function ghRead(token) {
   if (res.status === 404) return { data: null, sha: null };
   if (!res.ok) throw new Error(`GitHub read error ${res.status}`);
   const json = await res.json();
-  const data = JSON.parse(atob(json.content.replace(/\s/g, "")));
+  const raw = json.content ? json.content.replace(/\s/g, "") : "";
+  let data = null;
+  try { if (raw) data = JSON.parse(atob(raw)); } catch {}
   return { data, sha: json.sha };
 }
 
