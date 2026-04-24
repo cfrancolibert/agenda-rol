@@ -686,52 +686,75 @@ function Portrait({ user, size = 170, editable = false, onUpload }) {
 }
 
 // ── GitHub token setup modal ───────────────────────────────
-function SetupModal({ onSave, onSkip }) {
-  const [token, setToken] = useState("");
-  const [testing, setTesting] = useState(false);
+function SetupModal({ prefilledToken, onSave, onSkip }) {
+  const [connecting, setConnecting] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSave = async () => {
-    const t = token.trim();
-    if (!t) return;
-    setTesting(true); setError("");
+  const handleConnect = async () => {
+    setConnecting(true); setError("");
+    try {
+      await ghRead(prefilledToken);
+      onSave(prefilledToken);
+    } catch {
+      setError("No se pudo conectar. Pide al DM un nuevo enlace de acceso.");
+    } finally { setConnecting(false); }
+  };
+
+  // Manual token entry (fallback, shown when no prefilled token)
+  const [manualToken, setManualToken] = useState("");
+  const handleManual = async () => {
+    const t = manualToken.trim(); if (!t) return;
+    setConnecting(true); setError("");
     try {
       await ghRead(t);
       onSave(t);
     } catch {
-      setError("Token inválido o sin permisos. Verifica que tiene acceso a repositorios públicos.");
-    } finally { setTesting(false); }
+      setError("Token inválido o sin permisos.");
+    } finally { setConnecting(false); }
   };
+
+  if (prefilledToken) {
+    return (
+      <div className="setup-overlay">
+        <div className="setup-card parchment torn" style={{ textAlign: "center" }}>
+          <div style={{ fontSize: 48, marginBottom: 12 }}>⚔️</div>
+          <h2>¡Bienvenido al Cónclave!</h2>
+          <div className="setup-sub">
+            Tu acceso a la agenda compartida del grupo está listo.<br/>
+            Haz clic en <strong>Entrar</strong> para conectarte.
+          </div>
+          {error && <div className="setup-error" style={{ marginBottom: 12 }}>{error}</div>}
+          <div className="modal-actions">
+            <button className="btn ghost" onClick={onSkip}>Entrar sin sincronizar</button>
+            <button className="btn primary" onClick={handleConnect} disabled={connecting}>
+              {connecting ? "Conectando…" : "Entrar"}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="setup-overlay">
       <div className="setup-card parchment torn">
-        <h2>Sincronizar con GitHub</h2>
+        <h2>Acceso al Cónclave</h2>
         <div className="setup-sub">
-          Conecta un token de GitHub para que todos los jugadores compartan la misma agenda desde cualquier dispositivo.
+          Pide al DM el enlace de acceso, o ingresa el token manualmente si ya lo tienes.
         </div>
-        <ol className="setup-steps">
-          <li>Ve a <a href="https://github.com/settings/tokens/new" target="_blank" rel="noopener">github.com/settings/tokens/new</a></li>
-          <li>Nombre: <strong>agenda-rol</strong></li>
-          <li>Selecciona el permiso: <strong>public_repo</strong></li>
-          <li>Genera el token y pégalo aquí:</li>
-        </ol>
         <input
           type="password"
           placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
-          value={token}
-          onChange={(e) => setToken(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSave()}
+          value={manualToken}
+          onChange={(e) => setManualToken(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleManual()}
           autoFocus
         />
-        <div className="setup-hint">
-          El token se guarda solo en este navegador (localStorage). No se sube al repositorio.
-        </div>
         {error && <div className="setup-error">{error}</div>}
         <div className="modal-actions">
           <button className="btn ghost" onClick={onSkip}>Usar sin sincronizar</button>
-          <button className="btn primary" onClick={handleSave} disabled={!token.trim() || testing}>
-            {testing ? "Verificando…" : "Conectar"}
+          <button className="btn primary" onClick={handleManual} disabled={!manualToken.trim() || connecting}>
+            {connecting ? "Verificando…" : "Conectar"}
           </button>
         </div>
       </div>
@@ -1079,6 +1102,9 @@ function SyncBar({ status, onConfigure }) {
 
 // ── Root App ───────────────────────────────────────────────
 function App() {
+  // Read token from URL hash (e.g. #ghp_xxx) — auto-configure on first visit
+  const hashToken = window.location.hash.slice(1).trim();
+
   const [token, setToken]             = useState(() => localStorage.getItem(LS_TOKEN) || "");
   const [showSetup, setShowSetup]     = useState(false);
   const [users, setUsers]             = useState(() => lsGet(LS_USERS, null) || DEFAULT_USERS);
@@ -1089,9 +1115,13 @@ function App() {
   const shaRef    = useRef(null);
   const saveTimer = useRef(null);
 
-  // Show setup on first load if no token
+  // Show setup on first load if no token saved yet
   useEffect(() => {
     if (!token) setShowSetup(true);
+    // If a hash token is present but we already have a saved token, clean up the URL silently
+    if (hashToken && token) {
+      history.replaceState(null, "", window.location.pathname);
+    }
   }, []);
 
   // Load data from GitHub on mount (if token)
@@ -1161,8 +1191,13 @@ function App() {
     localStorage.setItem(LS_TOKEN, t);
     setToken(t);
     setShowSetup(false);
+    // Clean the token out of the URL bar after saving
+    history.replaceState(null, "", window.location.pathname);
   };
-  const handleSkipSetup = () => setShowSetup(false);
+  const handleSkipSetup = () => {
+    setShowSetup(false);
+    history.replaceState(null, "", window.location.pathname);
+  };
 
   useEffect(() => {
     if (currentUserId && !users.find(u => u.id === currentUserId)) setCurrentUserId(null);
@@ -1170,7 +1205,7 @@ function App() {
 
   return (
     <>
-      {showSetup && <SetupModal onSave={handleSaveToken} onSkip={handleSkipSetup} />}
+      {showSetup && <SetupModal prefilledToken={hashToken || null} onSave={handleSaveToken} onSkip={handleSkipSetup} />}
       {currentUserId ? (
         <CalendarScreen
           users={users}
