@@ -239,23 +239,6 @@
   .pact-sub { font-family: "IM Fell English",serif; font-style: italic; color: #c49a55; font-size: 16px; margin-top: 16px; letter-spacing: 0.08em; animation: fadeInSlow 2s ease 1.8s both; text-align: center; z-index: 3; }
   @keyframes fadeInSlow { from{opacity:0} to{opacity:1} }
 
-  /* ── LOCK ANIMATION ──────────────────────────────────── */
-  .pact-lock { width: 120px; height: 140px; z-index: 3; animation: fadeInSlow 0.5s ease 0.3s both; filter: drop-shadow(0 0 20px rgba(227,192,102,0.5)); }
-  .lock-body { animation: lockAppear 0.4s ease 0.3s both; }
-  @keyframes lockAppear { from{opacity:0;transform:scale(0.8)} to{opacity:1;transform:scale(1)} }
-  .lock-shackle { transform-origin: 50% 100%; animation: shackleDrop 0.55s cubic-bezier(0.4,0,0.2,1) 0.7s both; }
-  @keyframes shackleDrop {
-    0%   { transform: translateY(-22px); }
-    65%  { transform: translateY(0px); }
-    78%  { transform: translateY(-4px); }
-    90%  { transform: translateY(0px); }
-    100% { transform: translateY(0px); }
-  }
-  .lock-flash { animation: lockFlash 0.3s ease 1.25s both; }
-  @keyframes lockFlash { 0%{opacity:0} 40%{opacity:1} 100%{opacity:0} }
-  .lock-glow { animation: lockGlowPulse 2s ease-in-out 1.3s infinite alternate; }
-  @keyframes lockGlowPulse { from{opacity:0.5} to{opacity:1} }
-
   /* ── PACT CONTRACT ───────────────────────────────────── */
   .pact-contract { position: relative; width: min(400px,75vw); max-height: 38vh; animation: contractDrop 1.2s cubic-bezier(0.2,0.8,0.3,1) 0.8s both; z-index: 3; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.8)) drop-shadow(0 0 20px rgba(184,137,59,0.3)); }
   @keyframes contractDrop { from{opacity:0;transform:translateY(-30px) rotate(-2deg)} to{opacity:1;transform:translateY(0) rotate(-1deg)} }
@@ -804,56 +787,45 @@ function CalendarScreen({ users, currentUserId, schedules, setSchedules, onSwitc
   );
 }
 
-// ── Pact overlay with lock animation ──────────────────────
+// ── Pact overlay ───────────────────────────────────────────
 function PactOverlay() {
   return (
     <div className="pact-overlay">
       <div className="pact-title">Tu compromiso<br/>ha sido sellado</div>
       <div className="pact-ornament"><span className="line"></span><span className="star">✦</span><span className="line"></span></div>
-
-      {/* Animated padlock */}
-      <svg className="pact-lock" viewBox="0 0 100 130" xmlns="http://www.w3.org/2000/svg">
+      <svg className="pact-contract" viewBox="0 0 520 460" xmlns="http://www.w3.org/2000/svg">
         <defs>
-          <radialGradient id="lockBodyGrad" cx="0.4" cy="0.3" r="0.7">
-            <stop offset="0%" stopColor="#c9a84c"/>
-            <stop offset="60%" stopColor="#8a6218"/>
-            <stop offset="100%" stopColor="#4a3008"/>
+          <linearGradient id="parchGrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#f4e8cf"/><stop offset="50%" stopColor="#e6d3a6"/><stop offset="100%" stopColor="#c9ac77"/>
+          </linearGradient>
+          <radialGradient id="waxGrad" cx="0.35" cy="0.3" r="0.75">
+            <stop offset="0%" stopColor="#c84640"/><stop offset="55%" stopColor="#7a1f1a"/><stop offset="100%" stopColor="#3d0f0c"/>
           </radialGradient>
-          <radialGradient id="lockGlowGrad" cx="0.5" cy="0.5" r="0.5">
-            <stop offset="0%" stopColor="rgba(227,192,102,0.6)"/>
-            <stop offset="100%" stopColor="rgba(227,192,102,0)"/>
-          </radialGradient>
+          <filter id="paperNoise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="7"/>
+            <feColorMatrix values="0 0 0 0 0.55  0 0 0 0 0.42  0 0 0 0 0.22  0 0 0 0.12 0"/>
+            <feComposite in2="SourceGraphic" operator="in"/>
+          </filter>
         </defs>
-
-        {/* Glow behind lock */}
-        <ellipse className="lock-glow" cx="50" cy="90" rx="38" ry="32" fill="url(#lockGlowGrad)"/>
-
-        {/* Shackle (animated dropping down) */}
-        <g className="lock-shackle">
-          <path d="M 28 66 L 28 42 Q 28 18 50 18 Q 72 18 72 42 L 72 66"
-            fill="none" stroke="#e3c066" strokeWidth="9" strokeLinecap="round"/>
-          <path d="M 28 66 L 28 42 Q 28 18 50 18 Q 72 18 72 42 L 72 66"
-            fill="none" stroke="#b8893b" strokeWidth="9" strokeLinecap="round" opacity="0.4"/>
+        <path d="M 40 30 C 60 22, 120 28, 180 24 C 260 18, 340 30, 420 22 C 460 20, 480 28, 488 50 L 486 200 C 490 260, 478 320, 488 400 C 482 420, 460 430, 420 428 C 340 432, 260 426, 180 432 C 120 434, 70 428, 40 426 C 24 418, 30 360, 28 280 C 32 200, 22 120, 32 60 Z" fill="url(#parchGrad)" stroke="#8a6b3a" strokeWidth="1.2"/>
+        <path d="M 40 30 C 60 22, 120 28, 180 24 C 260 18, 340 30, 420 22 C 460 20, 480 28, 488 50 L 486 200 C 490 260, 478 320, 488 400 C 482 420, 460 430, 420 428 C 340 432, 260 426, 180 432 C 120 434, 70 428, 40 426 C 24 418, 30 360, 28 280 C 32 200, 22 120, 32 60 Z" fill="url(#paperNoise)" opacity="0.9"/>
+        <text x="260" y="72" textAnchor="middle" fontFamily="Cinzel Decorative, serif" fontWeight="900" fontSize="22" fill="#2a1b0c" letterSpacing="4">PACTO DE CÓNCLAVE</text>
+        <line x1="140" y1="86" x2="380" y2="86" stroke="#8a6218" strokeWidth="1"/>
+        <line x1="160" y1="92" x2="360" y2="92" stroke="#8a6218" strokeWidth="0.6"/>
+        {[120,138,156,174,192,210,228,246,264].map((y,i) => <line key={i} x1={70+(i%2)*4} y1={y} x2={i===8?280:440-(i%3)*20} y2={y} stroke="#4a3420" strokeWidth="1" opacity="0.55" strokeLinecap="round"/>)}
+        <line x1="80" y1="332" x2="300" y2="332" stroke="#2a1b0c" strokeWidth="1"/>
+        <text x="90" y="350" fontFamily="IM Fell English, serif" fontStyle="italic" fontSize="13" fill="#4a3420">Firma del Aventurero</text>
+        <path d="M 100 326 Q 120 310, 140 324 T 180 326 Q 200 316, 220 324 L 240 330" stroke="#2a1b0c" strokeWidth="1.6" fill="none" strokeLinecap="round"/>
+        <g transform="translate(400, 350)">
+          <circle cx="0" cy="0" r="46" fill="url(#waxGrad)"/>
+          <circle cx="0" cy="0" r="46" fill="none" stroke="#2a0a08" strokeWidth="1" opacity="0.7"/>
+          <path d="M -32 28 Q -28 48, -20 52 Q -14 42, -18 30 Z" fill="url(#waxGrad)"/>
+          <path d="M 30 -30 Q 40 -26, 44 -18 Q 36 -14, 28 -22 Z" fill="url(#waxGrad)" opacity="0.85"/>
+          <circle cx="0" cy="0" r="36" fill="none" stroke="#3d0f0c" strokeWidth="1.2" opacity="0.6"/>
+          <text x="0" y="10" textAnchor="middle" fontFamily="Cinzel Decorative, serif" fontWeight="900" fontSize="34" fill="#e3c066">✦</text>
+          <ellipse cx="-14" cy="-16" rx="14" ry="8" fill="rgba(255,220,180,0.25)"/>
         </g>
-
-        {/* Lock body */}
-        <g className="lock-body">
-          <rect x="16" y="62" width="68" height="58" rx="10" ry="10" fill="url(#lockBodyGrad)" stroke="#2a1b0c" strokeWidth="1.5"/>
-          <rect x="16" y="62" width="68" height="14" rx="10" ry="10" fill="rgba(255,230,150,0.15)"/>
-
-          {/* Keyhole */}
-          <circle cx="50" cy="86" r="9" fill="#2a1b0c"/>
-          <circle cx="50" cy="84" r="6" fill="#1a0e06"/>
-          <rect x="46.5" y="88" width="7" height="12" rx="2" fill="#2a1b0c"/>
-
-          {/* Highlight */}
-          <ellipse cx="36" cy="70" rx="10" ry="5" fill="rgba(255,245,200,0.18)"/>
-        </g>
-
-        {/* Flash when lock closes */}
-        <ellipse className="lock-flash" cx="50" cy="90" rx="44" ry="38" fill="rgba(227,192,102,0.35)"/>
       </svg>
-
       <div className="pact-sub">— Que los dioses atestigüen esta palabra —</div>
     </div>
   );
@@ -936,11 +908,7 @@ function App() {
 
   const updateUsers = u => { setUsers(u); triggerSync(u, schedules); };
   const updateSchedules = updater => {
-    setSchedules(prev => {
-      const next = typeof updater==="function" ? updater(prev) : updater;
-      triggerSync(users, next);
-      return next;
-    });
+    setSchedules(prev => typeof updater==="function" ? updater(prev) : updater);
   };
 
   const updateUser  = (id,p) => updateUsers(users.map(u=>u.id===id?{...u,...p}:u));
@@ -953,6 +921,18 @@ function App() {
 
   const sealPact = () => {
     setSealing(true);
+    if (token) {
+      setSyncStatus("syncing");
+      (async () => {
+        try {
+          const {sha} = await ghRead(token);
+          shaRef.current = sha;
+          const newSha = await ghWrite(token, {users, schedules}, sha);
+          shaRef.current = newSha;
+          setSyncStatus("synced");
+        } catch { setSyncStatus("error"); }
+      })();
+    }
     setTimeout(()=>{ setSealing(false); setCurrent(null); }, 4500);
   };
 
