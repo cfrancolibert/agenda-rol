@@ -924,13 +924,20 @@ function App() {
     if (token) {
       setSyncStatus("syncing");
       (async () => {
-        try {
-          const {sha} = await ghRead(token);
-          shaRef.current = sha;
-          const newSha = await ghWrite(token, {users, schedules}, sha);
-          shaRef.current = newSha;
-          setSyncStatus("synced");
-        } catch { setSyncStatus("error"); }
+        let retries = 3;
+        while (retries-- > 0) {
+          try {
+            const { data: latest, sha } = await ghRead(token);
+            const merged = {
+              users: latest?.users || users,
+              schedules: { ...(latest?.schedules || {}), [currentUserId]: schedules[currentUserId] || {} }
+            };
+            const newSha = await ghWrite(token, merged, sha);
+            shaRef.current = newSha;
+            setSyncStatus("synced");
+            break;
+          } catch { if (retries === 0) setSyncStatus("error"); }
+        }
       })();
     }
     setTimeout(()=>{ setSealing(false); setCurrent(null); }, 4500);
