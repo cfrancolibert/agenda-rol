@@ -190,16 +190,16 @@
   .legend .hint { margin-left: auto; font-style: italic; color: var(--ink-faded); font-size: 13px; }
 
   /* ── GRID ────────────────────────────────────────────── */
-  .cal-wrap { padding: 16px 8px; border-radius: 4px; }
+  .cal-wrap { padding: 12px 6px; border-radius: 4px; }
   .cal-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .grid { display: grid; grid-template-columns: 52px repeat(7,1fr); gap: 2px; min-width: 520px; }
+  .grid { display: grid; grid-template-columns: 40px repeat(7,1fr); gap: 1px; }
   .corner { background: transparent; }
-  .day-head { font-family: "Cinzel",serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; font-size: 11px; text-align: center; padding: 6px 2px 8px; color: var(--ink); border-bottom: 2px solid var(--gold-deep); }
+  .day-head { font-family: "Cinzel",serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; font-size: 10px; text-align: center; padding: 4px 1px 6px; color: var(--ink); border-bottom: 2px solid var(--gold-deep); }
   .day-head .day-name { display: block; }
-  .day-head .day-date { display: block; font-family: "IM Fell English",serif; font-style: italic; font-size: 11px; color: var(--ink-faded); letter-spacing: 0.03em; margin-top: 1px; text-transform: none; font-weight: 400; }
-  .hour-label { font-family: "Cinzel",serif; font-weight: 600; font-size: 11px; color: var(--ink-soft); padding: 8px 4px 0 0; text-align: right; line-height: 1; position: relative; top: -5px; }
+  .day-head .day-date { display: block; font-family: "IM Fell English",serif; font-style: italic; font-size: 10px; color: var(--ink-faded); letter-spacing: 0.02em; margin-top: 1px; text-transform: none; font-weight: 400; }
+  .hour-label { font-family: "Cinzel",serif; font-weight: 600; font-size: 10px; color: var(--ink-soft); padding: 4px 3px 0 0; text-align: right; line-height: 1; position: relative; top: -3px; }
   .cell {
-    height: 38px; background: rgba(244,232,207,0.35); border: 1px solid rgba(138,107,58,0.4);
+    height: 26px; background: rgba(244,232,207,0.35); border: 1px solid rgba(138,107,58,0.4);
     border-radius: 2px; cursor: pointer; position: relative;
     transition: background 0.1s; user-select: none; overflow: hidden;
     touch-action: none;
@@ -248,6 +248,40 @@
   @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
   .seal { display: inline-block; width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #a83832 0%, #6f1f1a 60%, #3d0f0c 100%); box-shadow: 0 2px 6px rgba(0,0,0,0.5), inset -2px -3px 8px rgba(0,0,0,0.4); position: relative; vertical-align: middle; }
   .seal::after { content: "✦"; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #f4c05a; font-size: 15px; }
+
+  /* ── MOBILE ──────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .app-header { padding: 10px 10px 6px; }
+    .app-header .subtitle { display: none; }
+    .ornament { display: none; }
+    .cal-screen { padding: 6px 4px 80px; }
+    .cal-topbar { padding: 6px 8px; gap: 6px; margin-bottom: 6px; }
+    .mini-portrait { width: 32px; height: 32px; }
+    .mini-portrait .portrait-placeholder { font-size: 13px; }
+    .current-user { gap: 6px; }
+    .current-user .who .label { display: none; }
+    .current-user .who .name { font-size: 13px; }
+    .view-tabs button { font-size: 9px; padding: 5px 8px; letter-spacing: 0.04em; }
+    .topbar-actions { gap: 5px; }
+    .seal-btn { font-size: 9px; padding: 6px 8px 6px 7px; gap: 4px; letter-spacing: 0.05em; }
+    .seal-btn .wax-dot { width: 11px; height: 11px; }
+    .btn { font-size: 9px; padding: 5px 10px; }
+    .week-nav { gap: 5px; padding: 5px 6px; margin-bottom: 5px; }
+    .week-nav .week-label { font-size: 9px; min-width: 90px; }
+    .week-nav .week-btn { font-size: 10px; padding: 4px 7px; }
+    .legend { gap: 7px; padding: 4px 8px; margin-bottom: 5px; font-size: 11px; }
+    .legend-swatch { width: 11px; height: 11px; }
+    .legend .hint { display: none; }
+    .cal-wrap { padding: 4px 1px; }
+    .grid { grid-template-columns: 26px repeat(7,1fr); }
+    .day-head { font-size: 7px; padding: 2px 0px 4px; letter-spacing: 0; }
+    .day-head .day-date { font-size: 7px; }
+    .hour-label { font-size: 7px; padding: 2px 2px 0 0; top: -2px; }
+    .cell { height: 20px; }
+    .cell .state-icon { font-size: 8px; }
+    .cell .avatar-dot { width: 10px; height: 10px; font-size: 6px; }
+    .cell.all-available::after { font-size: 8px; top: 0; right: 1px; }
+  }
 </style>
 </head>
 <body>
