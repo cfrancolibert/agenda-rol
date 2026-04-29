@@ -891,22 +891,23 @@ function App() {
     else localStorage.removeItem(LS_CURRENT);
   }, [currentUserId]);
 
-  const triggerSync = useCallback((u, s) => {
+  const triggerSync = useCallback((newUsers, deletedUserId = null) => {
     if (!token) return;
     clearTimeout(saveTimer.current);
     setSyncStatus("syncing");
-    saveTimer.current = setTimeout(async ()=>{
+    saveTimer.current = setTimeout(async () => {
       try {
-        const {sha} = await ghRead(token);
-        shaRef.current = sha;
-        const newSha = await ghWrite(token, {users:u,schedules:s}, sha);
+        const { data: latest, sha } = await ghRead(token);
+        const sched = { ...(latest?.schedules || {}) };
+        if (deletedUserId) delete sched[deletedUserId];
+        const newSha = await ghWrite(token, { users: newUsers, schedules: sched }, sha);
         shaRef.current = newSha;
         setSyncStatus("synced");
       } catch { setSyncStatus("error"); }
     }, 1500);
   }, [token]);
 
-  const updateUsers = u => { setUsers(u); triggerSync(u, schedules); };
+  const updateUsers = u => { setUsers(u); triggerSync(u); };
   const updateSchedules = updater => {
     setSchedules(prev => typeof updater==="function" ? updater(prev) : updater);
   };
@@ -915,7 +916,7 @@ function App() {
   const createUser  = u => updateUsers([...users,u]);
   const deleteUser  = id => {
     const nu=users.filter(u=>u.id!==id), ns={...schedules};
-    delete ns[id]; setUsers(nu); setSchedules(ns); triggerSync(nu,ns);
+    delete ns[id]; setUsers(nu); setSchedules(ns); triggerSync(nu, id);
     if (currentUserId===id) setCurrent(null);
   };
 
