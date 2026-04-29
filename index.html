@@ -78,7 +78,7 @@
   .ornament svg { width: 24px; height: 24px; }
 
   /* ── SYNC BAR ────────────────────────────────────────── */
-  .sync-bar { position: fixed; bottom: 16px; right: 16px; z-index: 100; display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 20px; font-family: "Cinzel",serif; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; border: 1px solid; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
+  .sync-bar { position: fixed; bottom: 16px; right: 16px; z-index: 100; display: flex; align-items: center; gap: 8px; padding: 7px 12px; border-radius: 20px; font-family: "Cinzel",serif; font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; border: 1px solid; box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
   .sync-bar.synced  { background: rgba(35,68,33,0.92);  border-color: var(--forest-deep); color: #a8d8a0; }
   .sync-bar.syncing { background: rgba(42,27,12,0.92);  border-color: var(--gold-deep);   color: var(--gold-bright); }
   .sync-bar.error   { background: rgba(90,26,24,0.92);  border-color: var(--garnet-deep); color: #ffb8b0; }
@@ -611,9 +611,24 @@ function CalendarScreen({ users, currentUserId, schedules, setSchedules, onSwitc
   const [view, setView] = useState("mine");
   const [weekOffset, setWeekOffset] = useState(0);
   const [hover, setHover] = useState(null);
+  const [showAbandon, setShowAbandon] = useState(false);
   const weekDates = getWeekDates(weekOffset);
   const user = users.find(u => u.id === currentUserId);
   const mySchedule = schedules[currentUserId] || {};
+
+  // Track the saved baseline to detect unsaved changes
+  const baseline = useRef(JSON.stringify(schedules[currentUserId] || {}));
+  const isDirty = JSON.stringify(mySchedule) !== baseline.current;
+
+  const handleSwitchUser = () => {
+    if (isDirty) { setShowAbandon(true); return; }
+    onSwitchUser();
+  };
+
+  const handleAbandon = () => {
+    setSchedules(prev => ({ ...prev, [currentUserId]: JSON.parse(baseline.current) }));
+    onSwitchUser();
+  };
 
   // Pointer-based painting (works for mouse AND touch, no duplicates)
   const painting = useRef(null);
@@ -690,7 +705,7 @@ function CalendarScreen({ users, currentUserId, schedules, setSchedules, onSwitc
         <div className="topbar-actions">
           {view==="mine" && <button className="btn ghost" onClick={()=>{if(!confirm("¿Borrar tu agenda entera?"))return;setSchedules(prev=>({...prev,[currentUserId]:{}}));}}>Limpiar</button>}
           {view==="mine" && <button className="seal-btn" onClick={onSealPact}><span className="wax-dot"></span>Sellar Pacto</button>}
-          <button className="btn" onClick={onSwitchUser}>Cambiar</button>
+          <button className="btn" onClick={handleSwitchUser}>Cambiar</button>
         </div>
       </div>
 
@@ -783,6 +798,40 @@ function CalendarScreen({ users, currentUserId, schedules, setSchedules, onSwitc
           })}
         </div>
       )}
+
+      {showAbandon && (
+        <div className="modal-backdrop" onClick={()=>setShowAbandon(false)}>
+          <div className="modal parchment torn" onClick={e=>e.stopPropagation()} style={{maxWidth:420}}>
+            <div style={{textAlign:"center",marginBottom:10}}>
+              <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M26 6 L30 20 L44 24 L30 28 L26 44 L22 28 L8 24 L22 20 Z" fill="#c9ac77" opacity="0.5"/>
+                <path d="M26 10 L29 21 L40 24 L29 27 L26 40 L23 27 L12 24 L23 21 Z" fill="#b8893b"/>
+                <path d="M23 6 L26 2 L29 6 L26 4 Z M23 46 L26 50 L29 46 L26 48 Z M6 23 L2 26 L6 29 L4 26 Z M46 23 L50 26 L46 29 L48 26 Z" fill="#8a6218" opacity="0.7"/>
+                <circle cx="26" cy="24" r="5" fill="#e3c066"/>
+                <circle cx="26" cy="24" r="3" fill="#8a6218"/>
+              </svg>
+            </div>
+            <h2 style={{color:"var(--garnet-deep)",fontSize:19,lineHeight:1.3,letterSpacing:"0.06em"}}>
+              ¡Tu Pacto Aguarda en las Sombras!
+            </h2>
+            <div className="modal-sub" style={{lineHeight:1.8,fontSize:15}}>
+              Tus marcas en el <em>Códice de Campaña</em> aún no<br/>
+              han sido grabadas con el sello del cónclave.<br/>
+              Si partes sin sellar, tus horas se perderán<br/>
+              en el vacío eterno del olvido.
+            </div>
+            <div className="modal-actions">
+              <button className="btn primary" onClick={()=>setShowAbandon(false)}>
+                ⚔ Regresar y Sellar
+              </button>
+              <button className="btn ghost" style={{borderColor:"var(--garnet-deep)",color:"var(--garnet-deep)"}}
+                onClick={handleAbandon}>
+                Partir sin Sellar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -832,10 +881,10 @@ function PactOverlay() {
 }
 
 // ── Sync status ────────────────────────────────────────────
-function SyncBar({ status, onConfigure }) {
+function SyncBar({ status }) {
   const labels = { synced:"Sincronizado", syncing:"Guardando…", error:"Error sync", notoken:"Sin sync" };
   return (
-    <div className={`sync-bar ${status}`} onClick={onConfigure} title="Configurar sincronización">
+    <div className={`sync-bar ${status}`}>
       <span className="sync-dot"></span>{labels[status]}
     </div>
   );
@@ -973,7 +1022,7 @@ function App() {
       )}
       {sealing && <PactOverlay/>}
       <MusicBtn/>
-      <SyncBar status={token?syncStatus:"notoken"} onConfigure={()=>setShowSetup(true)}/>
+      <SyncBar status={token?syncStatus:"notoken"}/>
     </>
   );
 }
